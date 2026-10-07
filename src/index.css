@@ -1130,35 +1130,130 @@ a {
    12. EXACT MIDNIGHT BLUE FOOTER
    ========================================================================== */
 .sp-website-footer {
-  background: var(--sp-footer-navy);
+  background: #030a1c;
   color: #94a3b8;
   padding: 48px 0 28px 0;
 }
 
+/* Category Directory Mega-Grid (Image 1) */
+.sp-footer-mega-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 36px 24px;
+  margin-bottom: 40px;
+}
+
+.sp-footer-mega-col h4 {
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.sp-footer-mega-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.sp-footer-mega-list a {
+  color: #94a3b8;
+  font-size: 0.82rem;
+  transition: color 150ms ease;
+}
+
+.sp-footer-mega-list a:hover {
+  color: #ffffff;
+}
+
+/* Mobile Category Accordions (Image 3) */
+.sp-footer-accordions-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.sp-footer-accordion-card {
+  background: #08173d;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sp-footer-accordion-header {
+  width: 100%;
+  padding: 13px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: left;
+}
+
+.sp-footer-accordion-content {
+  padding: 0 16px 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sp-footer-accordion-content a {
+  color: #94a3b8;
+  font-size: 0.82rem;
+  display: block;
+}
+
+/* Renting from SharePal in Bangalore (Image 1) */
+.sp-footer-city-description {
+  margin-bottom: 36px;
+}
+
+.sp-footer-city-heading {
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: underline;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+
+.sp-footer-city-text {
+  color: #94a3b8;
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+/* Categories on Rent SEO Summary (Image 2) */
 .sp-footer-seo-top {
-  padding-bottom: 28px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   margin-bottom: 32px;
 }
 
 .sp-footer-cat-heading {
-  font-size: 0.92rem;
-  font-weight: 700;
+  font-size: 0.82rem;
+  font-weight: 500;
   color: #ffffff;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .sp-footer-subcat-heading {
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   font-weight: 700;
   color: #ffffff;
   margin-bottom: 8px;
+  display: block;
 }
 
 .sp-footer-seo-desc {
   font-size: 0.82rem;
   line-height: 1.6;
-  color: #cbd5e1;
+  color: #94a3b8;
 }
 
 .sp-footer-read-more-btn {
@@ -1169,18 +1264,45 @@ a {
   font-size: 0.8rem;
   font-weight: 600;
   margin-top: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
+/* Brand Logo Bar (Image 2) */
 .sp-footer-brand-row {
-  margin-bottom: 28px;
+  margin-bottom: 32px;
 }
 
+.sp-footer-brand-bar {
+  background: #08173d;
+  border-radius: 6px;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+}
+
+.sp-footer-brand-share {
+  color: #2b70f7;
+  font-size: 1.85rem;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+}
+
+.sp-footer-brand-pal {
+  color: #9eff00;
+  font-size: 1.85rem;
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: -0.5px;
+}
+
+/* 5 Footer Links Columns (Image 2) */
 .sp-footer-links-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 24px;
   padding-bottom: 36px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .sp-footer-col h4 {
@@ -1202,18 +1324,19 @@ a {
   font-size: 0.82rem;
   transition: color 150ms ease;
 }
+
 .sp-footer-col a:hover {
   color: #ffffff;
 }
 
 .sp-green-new-pill {
-  background: var(--sp-lime-accent);
-  color: #0f172a;
+  background: #9eff00;
+  color: #000000;
   font-size: 0.65rem;
   font-weight: 800;
   padding: 1px 6px;
   border-radius: 9999px;
-  margin-left: 4px;
+  margin-left: 6px;
 }
 
 .sp-help-item {
@@ -1224,31 +1347,55 @@ a {
 
 .sp-social-icons-row {
   display: flex;
-  gap: 12px;
-  margin-top: 6px;
-}
-.sp-social-icons-row a {
-  color: #cbd5e1;
-}
-.sp-social-icons-row a:hover {
-  color: var(--sp-lime-accent);
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
 }
 
+.sp-social-icons-row a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: #08173d;
+  border-radius: 4px;
+  color: #ffffff;
+  transition: all 150ms ease;
+}
+
+.sp-social-icons-row a:hover {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+/* Bottom Bar (Image 2) */
 .sp-footer-bottom-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 20px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   font-size: 0.78rem;
   color: #94a3b8;
 }
 
 .sp-footer-go-up {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 4px;
-  color: #cbd5e1;
+  gap: 6px;
+  color: #ffffff;
+  font-size: 0.82rem;
   font-weight: 600;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 150ms ease;
+}
+
+.sp-footer-go-up:hover {
+  opacity: 0.8;
 }
 
 /* ==========================================================================
@@ -1884,5 +2031,19 @@ a {
     border-radius: 9999px !important;
     padding: 1px 4px !important;
     line-height: 1 !important;
+  }
+
+  /* Mobile Footer Adjustments */
+  .sp-website-footer {
+    padding-bottom: 80px !important;
+  }
+  .sp-footer-bottom-row {
+    flex-direction: column !important;
+    gap: 12px !important;
+    text-align: center !important;
+  }
+  .sp-footer-links-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 24px 16px !important;
   }
 }

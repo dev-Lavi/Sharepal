@@ -11,8 +11,52 @@ import {
   ChevronUp as ArrowUp 
 } from 'lucide-react';
 
+const footerCategoryGroups = [
+  {
+    title: 'Action Cameras',
+    items: ['Action Cameras', 'Pocket Cameras', 'GoPro Cameras', 'DJI Cameras', 'DJI Drones', '360 Cameras']
+  },
+  {
+    title: 'Cameras',
+    items: ['DSLR Cameras', 'Cameras', 'iPhones', 'DSLR Gimbal Combos', 'Wildlife Photography', 'Tripod and camera accessories', 'DSLR Lens']
+  },
+  {
+    title: 'Trekking Gear',
+    items: ['Trekking Gear', 'Trekking Jackets', 'Trek/Snow Pants', 'Trekking Shoes', 'Trek Accessories']
+  },
+  {
+    title: 'Riding Gear',
+    items: ['Riding Gear', 'Riding Luggage', 'Riding Jackets', 'Riding Essentials', 'Riding Boots', 'Binoculars']
+  },
+  {
+    title: 'Creator Gear',
+    items: ['Wireless & Collar Mics', 'Professional Cameras', 'Mirrorless Cameras', 'UNLMTD Vlogging', 'Mobile Gimbals', 'Vlogging']
+  },
+  {
+    title: 'Gaming Console',
+    items: ['PS5 Console', 'VR', 'Racing Wheel', 'Big Screen Gaming', 'Xbox Console']
+  },
+  {
+    title: 'Winter Wear',
+    items: ['Snow Boots', 'Winter Jackets', 'Backpacks']
+  },
+  {
+    title: 'Camping Gear',
+    items: ['Camping Gear', 'Camping Stools & Tables', 'Camping Tents', 'Sleeping Bags & Mats']
+  },
+  {
+    title: 'Audio Visual Equipment',
+    items: ['Projectors', 'VR', 'Mics', 'Speakers']
+  }
+];
+
 export default function Footer() {
   const [readMore, setReadMore] = useState(false);
+  const [openMobileGroup, setOpenMobileGroup] = useState('Cameras'); // 'Cameras' open by default matching reference
+
+  const toggleMobileGroup = (title) => {
+    setOpenMobileGroup(openMobileGroup === title ? null : title);
+  };
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -22,121 +66,62 @@ export default function Footer() {
     <footer className="sp-website-footer">
       <div className="sp-container">
 
-        {/* Category Directory Links Grid */}
-        <div className="sp-footer-mega-grid">
-          
-          {/* Row 1 Columns */}
-          <div className="sp-footer-mega-col">
-            <h4 className="sp-footer-mega-title">Action Cameras</h4>
-            <ul className="sp-footer-mega-list">
-              <li><a href="#">Action Cameras</a></li>
-              <li><a href="#">Pocket Cameras</a></li>
-              <li><a href="#">GoPro Cameras</a></li>
-              <li><a href="#">DJI Cameras</a></li>
-              <li><a href="#">DJI Drones</a></li>
-              <li><a href="#">360 Cameras</a></li>
-            </ul>
-          </div>
-
-          <div className="sp-footer-mega-col">
-            <h4 className="sp-footer-mega-title">Cameras</h4>
-            <ul className="sp-footer-mega-list">
-              <li><a href="#">DSLR Cameras</a></li>
-              <li><a href="#">Cameras</a></li>
-              <li><a href="#">iPhones</a></li>
-              <li><a href="#">DSLR Gimbal Combos</a></li>
-              <li><a href="#">Wildlife Photography</a></li>
-              <li><a href="#">Tripod and camera accessories</a></li>
-            </ul>
-          </div>
-
-          <div className="sp-footer-mega-col">
-            <h4 className="sp-footer-mega-title">Trekking Gear</h4>
-            <ul className="sp-footer-mega-list">
-              <li><a href="#">Trekking Gear</a></li>
-              <li><a href="#">Trekking Jackets</a></li>
-              <li><a href="#">Trek/Snow Pants</a></li>
-              <li><a href="#">Trekking Shoes</a></li>
-              <li><a href="#">Trek Accessories</a></li>
-            </ul>
-          </div>
-
-          <div className="sp-footer-mega-col">
-            <h4 className="sp-footer-mega-title">Riding Gear</h4>
-            <ul className="sp-footer-mega-list">
-              <li><a href="#">Riding Gear</a></li>
-              <li><a href="#">Riding Luggage</a></li>
-              <li><a href="#">Riding Jackets</a></li>
-              <li><a href="#">Riding Essentials</a></li>
-              <li><a href="#">Riding Boots</a></li>
-              <li><a href="#">Binoculars</a></li>
-            </ul>
-          </div>
-
-          <div className="sp-footer-mega-col">
-            <h4 className="sp-footer-mega-title">Creator Gear</h4>
-            <ul className="sp-footer-mega-list">
-              <li><a href="#">Wireless & Collar Mics</a></li>
-              <li><a href="#">Professional Cameras</a></li>
-              <li><a href="#">Mirrorless Cameras</a></li>
-              <li><a href="#">UNLMTD Vlogging</a></li>
-              <li><a href="#">Mobile Gimbals</a></li>
-              <li><a href="#">Vlogging</a></li>
-            </ul>
-          </div>
-
-          {/* Row 2 Columns */}
-          <div className="sp-footer-mega-col">
-            <h4 className="sp-footer-mega-title">Gaming Console</h4>
-            <ul className="sp-footer-mega-list">
-              <li><a href="#">PS5 Console</a></li>
-              <li><a href="#">VR</a></li>
-              <li><a href="#">Racing Wheel</a></li>
-              <li><a href="#">Big Screen Gaming</a></li>
-              <li><a href="#">Xbox Console</a></li>
-            </ul>
-          </div>
-
-          <div className="sp-footer-mega-col">
-            <h4 className="sp-footer-mega-title">Winter Wear</h4>
-            <ul className="sp-footer-mega-list">
-              <li><a href="#">Snow Boots</a></li>
-              <li><a href="#">Winter Jackets</a></li>
-              <li><a href="#">Backpacks</a></li>
-            </ul>
-          </div>
-
-          <div className="sp-footer-mega-col">
-            <h4 className="sp-footer-mega-title">Camping Gear</h4>
-            <ul className="sp-footer-mega-list">
-              <li><a href="#">Camping Gear</a></li>
-              <li><a href="#">Camping Stools & Tables</a></li>
-              <li><a href="#">Camping Tents</a></li>
-              <li><a href="#">Sleeping Bags & Mats</a></li>
-            </ul>
-          </div>
-
-          <div className="sp-footer-mega-col">
-            <h4 className="sp-footer-mega-title">Audio Visual Equipment</h4>
-            <ul className="sp-footer-mega-list">
-              <li><a href="#">Projectors</a></li>
-              <li><a href="#">VR</a></li>
-              <li><a href="#">Mics</a></li>
-              <li><a href="#">Speakers</a></li>
-            </ul>
-          </div>
-
+        {/* ── 1. DESKTOP: CATEGORY MEGA-GRID (5 COLUMNS) ── */}
+        <div className="sp-footer-mega-grid desktop-only">
+          {footerCategoryGroups.map((group) => (
+            <div key={group.title} className="sp-footer-mega-col">
+              <h4 className="sp-footer-mega-title">{group.title}</h4>
+              <ul className="sp-footer-mega-list">
+                {group.items.map((item) => (
+                  <li key={item}>
+                    <a href="#">{item}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
 
-        {/* City Info Description */}
+        {/* ── 1B. MOBILE: CATEGORY ACCORDIONS ── */}
+        <div className="sp-footer-accordions-mobile mobile-only">
+          {footerCategoryGroups.map((group) => {
+            const isOpen = openMobileGroup === group.title;
+            return (
+              <div key={group.title} className="sp-footer-accordion-card">
+                <button
+                  type="button"
+                  className="sp-footer-accordion-header"
+                  onClick={() => toggleMobileGroup(group.title)}
+                  aria-expanded={isOpen}
+                >
+                  <span>{group.title}</span>
+                  {isOpen ? (
+                    <ChevronUp size={18} color="#94A3B8" />
+                  ) : (
+                    <ChevronDown size={18} color="#94A3B8" />
+                  )}
+                </button>
+                {isOpen && (
+                  <div className="sp-footer-accordion-content">
+                    {group.items.map((item) => (
+                      <a key={item} href="#">{item}</a>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* ── 2. "RENTING FROM SHAREPAL IN BANGALORE" ── */}
         <div className="sp-footer-city-description">
-          <h4 className="sp-footer-city-heading">Renting from SharePal in Bangalore</h4>
+          <a href="#" className="sp-footer-city-heading">Renting from SharePal in Bangalore</a>
           <p className="sp-footer-city-text">
-            Discover the convenience of renting from SharePal, your trusted partner for premium gear in Bangalore. Whether you're exploring the vibrant streets of Koramangala, setting up a shoot in Indiranagar, or planning a trek from the outskirts of Whitefield, SharePal has you covered. We offer a wide range of products, including cameras, action cameras, gaming consoles, projectors, speakers, trekking gear, riding gear, and creator gear. With free home delivery and pickup services, flexible rental tenures, and an easy-to-use platform, renting has never been easier. Experience the freedom to rent what you need, when you need it, without the commitment of buying.
+            Discover the convenience of renting from SharePal, your trusted partner in Bangalore for all your rental needs. Whether you're exploring the vibrant streets of Koramangala, setting up a shoot in Indiranagar, or planning a trek from the outskirts of Whitefield, SharePal has you covered. We offer a wide range of products, including cameras, action cameras, gaming consoles, projectors, speakers, trekking gear, riding gear, and creator gear. With free home delivery and pickup services, flexible rental tenures, and an easy-to-use platform, renting has never been easier. Experience the freedom to rent what you need, when you need it, without the commitment of buying.
           </p>
         </div>
 
-        {/* Categories on Rent SEO Summary */}
+        {/* ── 3. CATEGORIES ON RENT SEO SUMMARY ── */}
         <div className="sp-footer-seo-top">
           <div className="sp-footer-cat-heading">Categories on Rent</div>
           <a href="#" className="sp-footer-subcat-heading">Action Cameras on Rent</a>
@@ -158,15 +143,15 @@ export default function Footer() {
           </button>
         </div>
 
-        {/* Brand Logo */}
+        {/* ── 4. BRAND LOGO BAR ── */}
         <div className="sp-footer-brand-row">
-          <div className="sp-footer-logo-svg">
-            <span style={{ color: '#2563eb', fontSize: '2rem', fontWeight: 900, letterSpacing: '-0.5px' }}>Share</span>
-            <span style={{ color: '#9eff00', fontSize: '2rem', fontWeight: 900, fontStyle: 'italic', letterSpacing: '-0.5px' }}>Pal</span>
+          <div className="sp-footer-brand-bar">
+            <span className="sp-footer-brand-share">Share</span>
+            <span className="sp-footer-brand-pal">Pal</span>
           </div>
         </div>
 
-        {/* Footer Navigation Columns */}
+        {/* ── 5. 5 FOOTER NAVIGATION COLUMNS ── */}
         <div className="sp-footer-links-grid">
           
           {/* Col 1: Sharepal */}
@@ -204,7 +189,7 @@ export default function Footer() {
           <div className="sp-footer-col">
             <h4>Information</h4>
             <ul>
-              <li><a href="#">How it works?</a></li>
+              <li><a href="#">How It works?</a></li>
               <li><a href="#">FAQs</a></li>
               <li><a href="#">Verification</a></li>
               <li><a href="#">Cancellation Policy</a></li>
@@ -220,7 +205,7 @@ export default function Footer() {
               <li><a href="#">Shipping policy</a></li>
               <li><a href="#">Damage Policy</a></li>
               <li><a href="#">Terms of Use</a></li>
-              <li><a href="#" style={{ textDecoration: 'underline' }}>Privacy Policy</a></li>
+              <li><a href="#">Privacy Policy</a></li>
             </ul>
           </div>
 
@@ -248,7 +233,7 @@ export default function Footer() {
 
         </div>
 
-        {/* Bottom Bar */}
+        {/* ── 6. BOTTOM BAR ── */}
         <div className="sp-footer-bottom-row">
           <button type="button" className="sp-footer-go-up" onClick={scrollToTop}>
             <span>Go up</span>
