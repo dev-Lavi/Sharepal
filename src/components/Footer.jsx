@@ -144,10 +144,10 @@ export default function Footer() {
         </div>
 
         {/* ── 4. BRAND LOGO BAR ── */}
-        <div className="sp-footer-brand-row">
-          <div className="sp-footer-brand-bar">
-            <span className="sp-footer-brand-share">Share</span>
-            <span className="sp-footer-brand-pal">Pal</span>
+        <div className="sp-footer-brand-row w-full rounded-md px-5 py-3.5 mb-8 flex items-center bg-gradient-to-r from-[#050f2e] via-[#081b52] to-[#0d2a78]">
+          <div className="sp-footer-brand-bar flex items-center">
+            <span className="sp-footer-brand-share text-[#2b70f7] text-[1.85rem] font-black tracking-tight">Share</span>
+            <span className="sp-footer-brand-pal text-[#9eff00] text-[1.85rem] font-black italic tracking-tight">Pal</span>
           </div>
         </div>
 

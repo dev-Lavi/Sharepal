@@ -25,8 +25,8 @@ export default function Header({
   const hasDates = rentalDates && rentalDates.days > 0;
 
   return (
-    <header className={`sp-header ${isHeaderHidden ? 'sp-header-hidden' : ''}`}>
-      <div className="sp-container">
+    <header className={`sp-header ${isHeaderHidden ? 'sp-header-hidden' : ''} pb-2.5 md:pb-0`}>
+      <div className="sp-container px-3 sm:px-4 md:px-5">
         
         {/* Main Header Row */}
         <div className="sp-header-inner">
@@ -87,18 +87,18 @@ export default function Header({
           </div>
 
           {/* Mobile Right Bar: Bangalore Selector & Profile Icon */}
-          <div className="sp-mobile-header-right mobile-only">
+          <div className="sp-mobile-header-right mobile-only md:hidden flex items-center gap-2">
             <button 
               type="button" 
-              className="sp-mobile-city-pill"
+              className="sp-mobile-city-pill flex items-center gap-1.5 bg-[#6b21a8] text-white px-3 py-1.5 rounded-full text-xs font-semibold cursor-pointer shadow-sm hover:bg-[#7e22ce] transition-colors"
               onClick={onOpenCityModal}
             >
-              <MapPin size={14} />
+              <MapPin size={14} className="text-white" />
               <span>{currentCity.name}</span>
-              <ChevronDown size={13} />
+              <ChevronDown size={13} className="text-white" />
             </button>
 
-            <div className="sp-mobile-user-avatar">
+            <div className="sp-mobile-user-avatar w-8 h-8 rounded-full border-2 border-white flex items-center justify-center cursor-pointer">
               <User size={18} color="#ffffff" strokeWidth={2.2} />
             </div>
           </div>
@@ -161,18 +161,27 @@ export default function Header({
         </div>
 
         {/* Mobile Full-Width Date Selection Bar */}
-        <div className="sp-mobile-date-bar mobile-only" onClick={onOpenDateModal}>
-          <div className="sp-mobile-date-content">
-            <Calendar size={18} className="sp-mobile-date-icon" />
-            <span className="sp-mobile-date-text">
-              {hasDates 
-                ? `Rent For: ${rentalDates.startDateFormatted} • ${rentalDates.endDateFormatted}` 
-                : 'Select Rental Dates'}
-            </span>
+        <div 
+          className="sp-mobile-date-bar mobile-only md:hidden w-full bg-white rounded-full py-1 px-1.5 pl-3.5 flex items-center justify-between shadow-sm cursor-pointer mt-1.5" 
+          onClick={onOpenDateModal}
+        >
+          <div className="sp-mobile-date-content flex items-center gap-2 text-slate-800">
+            <Calendar size={17} className="sp-mobile-date-icon text-slate-900 shrink-0" />
+            <div className="sp-mobile-date-text text-xs sm:text-sm">
+              <span className="text-slate-500 font-normal">Rent For: </span>
+              <span className="text-slate-900 font-bold">
+                {hasDates 
+                  ? `${rentalDates.startDateFormatted} • ${rentalDates.endDateFormatted}` 
+                  : '11th Nov • 16th Dec'}
+              </span>
+            </div>
           </div>
-          <button type="button" className="sp-mobile-select-btn">
+          <button 
+            type="button" 
+            className="sp-mobile-select-btn bg-[#030a1c] hover:bg-[#08173d] text-white rounded-full px-3 py-1.5 flex items-center gap-1.5 text-xs font-bold shrink-0 transition-colors"
+          >
             <Calendar size={13} />
-            <span>{hasDates ? 'Edit' : 'Select'}</span>
+            <span>Edit</span>
           </button>
         </div>
 
