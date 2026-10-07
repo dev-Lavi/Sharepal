@@ -179,8 +179,8 @@ export default function App() {
         />
       </div>
 
-      {/* Mobile Top Hero Banner: Full Width on smaller devices */}
-      <div className="sp-container sp-mobile-hero-banner-wrapper mobile-only">
+      {/* Mobile Top Hero Banner: Full Width on smaller devices with edge-to-edge purple background */}
+      <div className="sp-mobile-hero-banner-wrapper mobile-only w-full">
         <GamingBanner />
       </div>
 

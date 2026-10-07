@@ -210,8 +210,8 @@ export default function DatePickerModal({ isOpen, onClose, onApplyDates, current
   if (!isOpen) return null;
 
   return (
-    <div className="sp-dp-overlay" onClick={onClose} role="dialog" aria-modal="true">
-      <div className="sp-dp-container" onClick={e => e.stopPropagation()}>
+    <div className="sp-dp-overlay fixed inset-0 z-[250] bg-black/65 backdrop-blur-sm flex items-center justify-center p-4" onClick={onClose} role="dialog" aria-modal="true">
+      <div className="sp-dp-container bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
 
         {/* Modal Header */}
         <div className="sp-dp-header">

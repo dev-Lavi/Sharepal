@@ -7,10 +7,10 @@ export default function FloatingActions({ onOpenDateModal, rentalDates }) {
 
   return (
     <>
-      {/* Floating Bottom Center Date Pill with Lime Green Border */}
+      {/* Floating Bottom Center Date Pill with Lime Green Border (Desktop only) */}
       <button
         type="button"
-        className="sp-floating-date-pill"
+        className="sp-floating-date-pill desktop-only hidden md:flex"
         onClick={onOpenDateModal}
         aria-label="Select rental dates"
       >
