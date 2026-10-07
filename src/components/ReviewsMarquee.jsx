@@ -19,10 +19,10 @@ export default function ReviewsMarquee() {
       </div>
 
       {/* Marquee Track Container */}
-      <div className="sp-marquee-wrapper">
+      <div className="sp-marquee-wrapper" tabIndex={0} aria-label="Customer reviews carousel">
         <div className="sp-marquee-track">
           {doubledReviews.map((rev, index) => (
-            <div key={`${rev.id}-${index}`} className="sp-review-clean-card">
+            <div key={`${rev.id}-${index}`} className="sp-review-clean-card" tabIndex={0}>
               
               {/* Google + 5 Gold Stars */}
               <div className="sp-review-card-top-row">
