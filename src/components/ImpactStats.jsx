@@ -1,34 +1,35 @@
 import React from 'react';
-import { PiggyBank, Leaf, RefreshCw } from 'lucide-react';
 
 export default function ImpactStats() {
   return (
-    <section className="sp-impact-section">
+    <section className="sp-impact-metrics-section">
       <div className="sp-container">
-        <div className="sp-impact-grid">
+        <div className="sp-impact-metrics-grid">
           
-          <div className="sp-impact-item">
-            <div style={{ display: 'inline-flex', padding: '12px', background: '#f4ecfc', color: '#4c187c', borderRadius: '50%', marginBottom: '12px' }}>
-              <PiggyBank size={28} />
+          {/* Metric 1 */}
+          <div className="sp-metric-col">
+            <div className="sp-metric-figure">
+              <span className="sp-num-blue">250Cr</span>
+              <span className="sp-num-green">+</span>
             </div>
-            <div className="sp-impact-number">₹250Cr+</div>
-            <div className="sp-impact-label">Saved by Renters Together</div>
+            <div className="sp-metric-text">Saved Together</div>
           </div>
 
-          <div className="sp-impact-item">
-            <div style={{ display: 'inline-flex', padding: '12px', background: '#ecfdf5', color: '#10b981', borderRadius: '50%', marginBottom: '12px' }}>
-              <Leaf size={28} />
+          {/* Metric 2 */}
+          <div className="sp-metric-col">
+            <div className="sp-metric-figure">
+              <span className="sp-num-green">4.5M Kg</span>
             </div>
-            <div className="sp-impact-number">4.5M Kg</div>
-            <div className="sp-impact-label">CO₂e Emissions Prevented</div>
+            <div className="sp-metric-text">CO₂e Emissions Saved</div>
           </div>
 
-          <div className="sp-impact-item">
-            <div style={{ display: 'inline-flex', padding: '12px', background: '#fff7ed', color: '#ff7a00', borderRadius: '50%', marginBottom: '12px' }}>
-              <RefreshCw size={28} />
+          {/* Metric 3 */}
+          <div className="sp-metric-col">
+            <div className="sp-metric-figure">
+              <span className="sp-num-blue">100K</span>
+              <span className="sp-num-green">+</span>
             </div>
-            <div className="sp-impact-number">100K+</div>
-            <div className="sp-impact-label">Products in Circulation</div>
+            <div className="sp-metric-text">Products In Circulation</div>
           </div>
 
         </div>

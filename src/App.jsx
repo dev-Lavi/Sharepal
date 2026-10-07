@@ -7,16 +7,13 @@ import ProductFilterBar from './components/ProductFilterBar';
 import ProductGrid from './components/ProductGrid';
 import ReviewsMarquee from './components/ReviewsMarquee';
 import ImpactStats from './components/ImpactStats';
-import WhySharePal from './components/WhySharePal';
 import FAQSection from './components/FAQSection';
-import SeoGuide from './components/SeoGuide';
 import Footer from './components/Footer';
 import FloatingActions from './components/FloatingActions';
 import DatePickerModal from './components/DatePickerModal';
 import CartDrawer from './components/CartDrawer';
 import QuickViewModal from './components/QuickViewModal';
 import CityModal from './components/CityModal';
-import ArchitectUpgradeModal from './components/ArchitectUpgradeModal';
 
 import { products, cities } from './data/products';
 
@@ -25,22 +22,15 @@ export default function App() {
   const [activeSuperCat, setActiveSuperCat] = useState('gaming');
   const [selectedSubCat, setSelectedSubCat] = useState('all');
 
-  // Search & Filter State
+  // Search State
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState('trending');
-  const [inStockOnly, setInStockOnly] = useState(false);
 
   // Location State
   const [currentCity, setCurrentCity] = useState(cities[0]); // Bangalore default
 
-  // Rental Dates State (Preloaded with 3-day default for rich instant pricing feedback)
-  const [rentalDates, setRentalDates] = useState({
-    startDate: new Date(Date.now() + 86400000).toISOString().split('T')[0],
-    endDate: new Date(Date.now() + 86400000 * 4).toISOString().split('T')[0],
-    days: 3,
-    startDateFormatted: new Date(Date.now() + 86400000).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }),
-    endDateFormatted: new Date(Date.now() + 86400000 * 4).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })
-  });
+  // Rental Dates State
+  const [rentalDates, setRentalDates] = useState(null);
 
   // Cart State
   const [cartItems, setCartItems] = useState([]);
@@ -49,7 +39,6 @@ export default function App() {
   const [isDateModalOpen, setIsDateModalOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCityModalOpen, setIsCityModalOpen] = useState(false);
-  const [isArchitectModalOpen, setIsArchitectModalOpen] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState(null);
 
   // Cart Management Handlers
@@ -84,28 +73,31 @@ export default function App() {
     return cartItems.reduce((acc, curr) => acc + curr.quantity, 0);
   }, [cartItems]);
 
-  // Filtering & Sorting Pipeline
+  // Filtering Pipeline
   const filteredProducts = useMemo(() => {
     let result = [...products];
 
-    // 1. Subcategory filter
+    // Subcategory filter from vertical dock
     if (selectedSubCat !== 'all') {
       if (selectedSubCat === 'ps5') {
-        result = result.filter(p => p.category === 'ps5' || p.name.includes('PS5'));
+        result = result.filter(p => p.name.includes('PS5'));
       } else if (selectedSubCat === 'gta-vi') {
-        result = result.filter(p => p.category === 'gta-vi' || p.name.includes('FC') || p.name.includes('God Of War') || p.name.includes('Spider-Man') || p.name.includes('Uncharted'));
+        result = result.filter(p => 
+          p.name.includes('FC') || 
+          p.name.includes('God Of War') || 
+          p.name.includes('Spider-Man') || 
+          p.name.includes('Uncharted') ||
+          p.name.includes('Cricket') ||
+          p.name.includes('Ghost')
+        );
       } else if (selectedSubCat === 'xbox') {
-        result = result.filter(p => p.category === 'xbox' || p.name.toLowerCase().includes('xbox'));
+        result = result.filter(p => p.name.toLowerCase().includes('xbox'));
       } else if (selectedSubCat === 'vr') {
-        result = result.filter(p => p.category === 'vr' || p.name.includes('Portal') || p.name.includes('VR'));
-      } else if (selectedSubCat === 'racing-wheel') {
-        result = result.filter(p => p.category === 'racing-wheel' || p.name.includes('Racing') || p.name.includes('Wheel'));
-      } else if (selectedSubCat === 'big-screen') {
-        result = result.filter(p => p.name.includes('Combo') || p.name.includes('Racing'));
+        result = result.filter(p => p.name.includes('Portal') || p.name.includes('VR') || p.name.includes('Racing'));
       }
     }
 
-    // 2. Search query filter
+    // Search filter
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       result = result.filter(p =>
@@ -114,38 +106,13 @@ export default function App() {
       );
     }
 
-    // 3. In-stock filter
-    if (inStockOnly) {
-      result = result.filter(p => !p.out_of_stock);
-    }
-
-    // 4. Sorting logic
-    if (sortBy === 'trending') {
-      result.sort((a, b) => (b.tag === 'Trending' ? 1 : 0) - (a.tag === 'Trending' ? 1 : 0) || b.booked_count - a.booked_count);
-    } else if (sortBy === 'booked') {
-      result.sort((a, b) => b.booked_count - a.booked_count);
-    } else if (sortBy === 'rating') {
-      result.sort((a, b) => b.rating - a.rating);
-    } else if (sortBy === 'price-asc') {
-      result.sort((a, b) => a.per_day_rent - b.per_day_rent);
-    } else if (sortBy === 'price-desc') {
-      result.sort((a, b) => b.per_day_rent - a.per_day_rent);
-    }
-
     return result;
-  }, [products, selectedSubCat, searchQuery, inStockOnly, sortBy]);
-
-  const handleResetFilters = () => {
-    setSelectedSubCat('all');
-    setSearchQuery('');
-    setInStockOnly(false);
-    setSortBy('trending');
-  };
+  }, [products, selectedSubCat, searchQuery]);
 
   return (
     <div className="sp-app-root">
       
-      {/* 1. Sticky Main Header */}
+      {/* 1. Header with exact blue logo, date/city selector, search, cart, login */}
       <Header
         currentCity={currentCity}
         onOpenCityModal={() => setIsCityModalOpen(true)}
@@ -153,76 +120,75 @@ export default function App() {
         rentalDates={rentalDates}
         cartCount={totalCartCount}
         onOpenCart={() => setIsCartOpen(true)}
-        onOpenArchitectModal={() => setIsArchitectModalOpen(true)}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
+        onOpenSearch={() => setIsSearchOpen(!isSearchOpen)}
       />
 
-      {/* 2. Sticky Super Category Navigation */}
+      {/* 2. Super Category Navigation Bar */}
       <SuperCategoryNav
         activeCategory={activeSuperCat}
         onSelectCategory={(catId) => setActiveSuperCat(catId)}
       />
 
-      {/* 3. Hero Banner with Flanking Controller Visuals */}
-      <HeroBanner />
-
-      {/* 4. Sub-Category Pill Carousel */}
-      <SubCategoryFilter
-        selectedSubCat={selectedSubCat}
-        onSelectSubCat={setSelectedSubCat}
-        totalProductsCount={products.length}
-      />
-
-      {/* 5. Main Catalog Area (Controls + Product Grid) */}
-      <main className="sp-container" style={{ paddingTop: '8px', paddingBottom: '32px' }}>
-        <ProductFilterBar
-          totalCount={products.length}
-          filteredCount={filteredProducts.length}
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          sortBy={sortBy}
-          setSortBy={setSortBy}
-          inStockOnly={inStockOnly}
-          setInStockOnly={setInStockOnly}
+      {/* 3. Main Split View: Vertical Dock (Left) + Content Area (Right) as shown in Images 1-3 */}
+      <div className="sp-container sp-main-catalog-layout">
+        
+        {/* Left: Vertical Category Dock */}
+        <SubCategoryFilter
+          selectedSubCat={selectedSubCat}
+          onSelectSubCat={setSelectedSubCat}
         />
 
-        <ProductGrid
-          products={filteredProducts}
-          rentalDates={rentalDates}
-          onOpenQuickView={(p) => setQuickViewProduct(p)}
-          onAddToCart={handleAddToCart}
-          cartItems={cartItems}
-          onOpenDateModal={() => setIsDateModalOpen(true)}
-          onResetFilters={handleResetFilters}
-        />
-      </main>
+        {/* Right: Banners + Product Grid */}
+        <div className="sp-catalog-main-content">
+          
+          {/* 3-Banner Carousel */}
+          <HeroBanner />
 
-      {/* 6. Customer Social Proof & Marquee */}
+          {/* Section Title & Total Count */}
+          <ProductFilterBar
+            totalCount={products.length}
+            isSearchOpen={isSearchOpen}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+          />
+
+          {/* 4-Column Product Grid */}
+          <ProductGrid
+            products={filteredProducts}
+            rentalDates={rentalDates}
+            onOpenQuickView={(p) => setQuickViewProduct(p)}
+            onAddToCart={handleAddToCart}
+            cartItems={cartItems}
+            onOpenDateModal={() => setIsDateModalOpen(true)}
+            onResetFilters={() => {
+              setSelectedSubCat('all');
+              setSearchQuery('');
+            }}
+          />
+
+        </div>
+
+      </div>
+
+      {/* 4. Customer Social Proof & Marquee (Image 4) */}
       <ReviewsMarquee />
 
-      {/* 7. Platform Impact & Environmental Metrics */}
+      {/* 5. Platform Impact Metrics (Image 4) */}
       <ImpactStats />
 
-      {/* 8. Why Bangalore Gamers Choose SharePal (4 Pillars) */}
-      <WhySharePal />
-
-      {/* 9. FAQs Accordions */}
+      {/* 6. FAQs Accordion */}
       <FAQSection />
 
-      {/* 10. Bangalore Gaming Guide & SEO Breadcrumbs */}
-      <SeoGuide />
-
-      {/* 11. Comprehensive Footer with Mega Category Menu */}
+      {/* 7. Midnight Blue Footer with Logo & 5 Columns (Image 5) */}
       <Footer />
 
-      {/* 12. Floating Actions (WhatsApp + Mobile Quick Dates) */}
+      {/* 8. Floating Actions: Black/Lime Date Pill + Lime/Blue Chat Bubble */}
       <FloatingActions
         onOpenDateModal={() => setIsDateModalOpen(true)}
         rentalDates={rentalDates}
       />
 
-      {/* 13. Modals & Drawers */}
+      {/* 9. Interactive Modals & Drawers */}
       <DatePickerModal
         isOpen={isDateModalOpen}
         onClose={() => setIsDateModalOpen(false)}
@@ -261,11 +227,6 @@ export default function App() {
         onClose={() => setIsCityModalOpen(false)}
         currentCity={currentCity}
         onSelectCity={(city) => setCurrentCity(city)}
-      />
-
-      <ArchitectUpgradeModal
-        isOpen={isArchitectModalOpen}
-        onClose={() => setIsArchitectModalOpen(false)}
       />
 
     </div>
