@@ -1,80 +1,68 @@
 import React, { useState } from 'react';
 import { faqs } from '../data/faqs';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 export default function FAQSection() {
-  const [openIds, setOpenIds] = useState([1]); // First FAQ open by default
+  const [openId, setOpenId] = useState(null);
   const [showAll, setShowAll] = useState(false);
 
   const toggleFAQ = (id) => {
-    if (openIds.includes(id)) {
-      setOpenIds(openIds.filter(item => item !== id));
-    } else {
-      setOpenIds([...openIds, id]);
-    }
+    setOpenId(openId === id ? null : id);
   };
 
   const displayedFaqs = showAll ? faqs : faqs.slice(0, 5);
 
   return (
-    <section className="sp-faq-section">
+    <section className="sp-faq-section-wrapper">
       <div className="sp-container">
         
-        <div className="sp-faq-header">
-          <h2>Frequently Asked Questions (FAQs)</h2>
-          <p style={{ color: '#6b7280', fontSize: '0.95rem', marginTop: '6px' }}>
-            Everything you need to know about renting gaming gadgets in Bangalore
-          </p>
-        </div>
+        {/* Single White Card Container as shown in Image 5 */}
+        <div className="sp-faq-card-container">
+          <h2 className="sp-faq-card-title">Frequently Asked Questions (FAQs)</h2>
 
-        <div className="sp-faq-accordion-list">
-          {displayedFaqs.map((faq) => {
-            const isOpen = openIds.includes(faq.id);
+          <div className="sp-faq-clean-list">
+            {displayedFaqs.map((faq) => {
+              const isOpen = openId === faq.id;
 
-            return (
-              <div key={faq.id} className={`sp-faq-item ${isOpen ? 'open' : ''}`}>
-                <button
-                  type="button"
-                  className="sp-faq-trigger"
-                  onClick={() => toggleFAQ(faq.id)}
-                  aria-expanded={isOpen}
-                >
-                  <span>{faq.question}</span>
-                  <ChevronDown size={18} className="sp-faq-chevron" />
-                </button>
-
-                {isOpen && (
-                  <div className="sp-faq-answer">
-                    <p>{faq.answer}</p>
-                    <span style={{ display: 'inline-block', marginTop: '8px', fontSize: '0.75rem', color: '#8a2be2', fontWeight: 600 }}>
-                      Category: {faq.category}
+              return (
+                <div key={faq.id} className="sp-faq-clean-item">
+                  <div
+                    className="sp-faq-clean-question-row"
+                    onClick={() => toggleFAQ(faq.id)}
+                    role="button"
+                    tabIndex={0}
+                  >
+                    <span className="sp-faq-clean-question-text">{faq.question}</span>
+                    <span className="sp-faq-clean-chevron">
+                      {isOpen ? (
+                        <ChevronUp size={15} color="#94A3B8" />
+                      ) : (
+                        <ChevronDown size={15} color="#94A3B8" />
+                      )}
                     </span>
                   </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
 
-        {faqs.length > 5 && (
-          <div style={{ textAlign: 'center', marginTop: '24px' }}>
+                  {isOpen && (
+                    <div className="sp-faq-clean-answer-box">
+                      <p>{faq.answer}</p>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* View More FAQs Button as shown in Image 5 */}
+          <div className="sp-faq-btn-wrapper">
             <button
               type="button"
+              className="sp-view-more-faqs-btn"
               onClick={() => setShowAll(!showAll)}
-              style={{
-                background: '#f3f4f6',
-                color: '#4c187c',
-                fontWeight: 700,
-                fontSize: '0.9rem',
-                padding: '12px 28px',
-                borderRadius: '9999px',
-                transition: 'background 200ms ease'
-              }}
             >
-              {showAll ? "Show Less FAQ's" : "View More FAQ's"}
+              {showAll ? "Show less FAQ's" : "View more FAQ's"}
             </button>
           </div>
-        )}
+        </div>
 
       </div>
     </section>

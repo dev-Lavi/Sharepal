@@ -1,10 +1,11 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Header from './components/Header';
 import SuperCategoryNav from './components/SuperCategoryNav';
-import HeroBanner from './components/HeroBanner';
+import { GamingBanner, AssetPartnerBanner, RentOutBanner } from './components/HeroBanner';
 import SubCategoryFilter from './components/SubCategoryFilter';
 import ProductFilterBar from './components/ProductFilterBar';
-import ProductGrid from './components/ProductGrid';
+import ProductCard from './components/ProductCard';
+import AvailableOffers from './components/AvailableOffers';
 import ReviewsMarquee from './components/ReviewsMarquee';
 import ImpactStats from './components/ImpactStats';
 import FAQSection from './components/FAQSection';
@@ -40,6 +41,26 @@ export default function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCityModalOpen, setIsCityModalOpen] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState(null);
+
+  // Scroll Header Upward Hide Animation State (Requirement 3)
+  const [isHeaderHidden, setIsHeaderHidden] = useState(false);
+
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > 60 && currentScrollY > lastScrollY) {
+        setIsHeaderHidden(true); // scrolling down
+      } else if (currentScrollY < lastScrollY || currentScrollY <= 20) {
+        setIsHeaderHidden(false); // scrolling up or at top
+      }
+      lastScrollY = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Cart Management Handlers
   const handleAddToCart = (product) => {
@@ -109,10 +130,27 @@ export default function App() {
     return result;
   }, [products, selectedSubCat, searchQuery]);
 
+  // Segment products for interleaved banners (Requirement 4)
+  const row1Products = filteredProducts.slice(0, 4);
+  const row2Products = filteredProducts.slice(4, 8);
+  const remainingProducts = filteredProducts.slice(8);
+
+  const renderProductCard = (product) => (
+    <ProductCard
+      key={product.id}
+      product={product}
+      rentalDates={rentalDates}
+      onOpenQuickView={(p) => setQuickViewProduct(p)}
+      onAddToCart={handleAddToCart}
+      isInCart={cartItems.some(i => i.id === product.id)}
+      onOpenDateModal={() => setIsDateModalOpen(true)}
+    />
+  );
+
   return (
     <div className="sp-app-root">
       
-      {/* 1. Header with exact blue logo, date/city selector, search, cart, login */}
+      {/* 1. Header with exact official hanging blue logo, date/city selector, search, cart, login */}
       <Header
         currentCity={currentCity}
         onOpenCityModal={() => setIsCityModalOpen(true)}
@@ -121,15 +159,18 @@ export default function App() {
         cartCount={totalCartCount}
         onOpenCart={() => setIsCartOpen(true)}
         onOpenSearch={() => setIsSearchOpen(!isSearchOpen)}
+        isHeaderHidden={isHeaderHidden}
       />
 
-      {/* 2. Super Category Navigation Bar */}
-      <SuperCategoryNav
-        activeCategory={activeSuperCat}
-        onSelectCategory={(catId) => setActiveSuperCat(catId)}
-      />
+      {/* 2. Super Category Navigation Bar (Sticky with dynamic top position) */}
+      <div className={`sp-super-nav-sticky-wrap ${isHeaderHidden ? 'is-top-stuck' : ''}`}>
+        <SuperCategoryNav
+          activeCategory={activeSuperCat}
+          onSelectCategory={(catId) => setActiveSuperCat(catId)}
+        />
+      </div>
 
-      {/* 3. Main Split View: Vertical Dock (Left) + Content Area (Right) as shown in Images 1-3 */}
+      {/* 3. Main Split View: Vertical Dock (Left) + Interleaved Content (Right) */}
       <div className="sp-container sp-main-catalog-layout">
         
         {/* Left: Vertical Category Dock */}
@@ -138,13 +179,13 @@ export default function App() {
           onSelectSubCat={setSelectedSubCat}
         />
 
-        {/* Right: Banners + Product Grid */}
+        {/* Right: Interleaved Banners, Products & Offers (Requirement 4 & 5) */}
         <div className="sp-catalog-main-content">
           
-          {/* 3-Banner Carousel */}
-          <HeroBanner />
+          {/* Banner 1: Gaming Consoles Banner */}
+          <GamingBanner />
 
-          {/* Section Title & Total Count */}
+          {/* Section Heading & Item Count */}
           <ProductFilterBar
             totalCount={products.length}
             isSearchOpen={isSearchOpen}
@@ -152,19 +193,37 @@ export default function App() {
             setSearchQuery={setSearchQuery}
           />
 
-          {/* 4-Column Product Grid */}
-          <ProductGrid
-            products={filteredProducts}
-            rentalDates={rentalDates}
-            onOpenQuickView={(p) => setQuickViewProduct(p)}
-            onAddToCart={handleAddToCart}
-            cartItems={cartItems}
-            onOpenDateModal={() => setIsDateModalOpen(true)}
-            onResetFilters={() => {
-              setSelectedSubCat('all');
-              setSearchQuery('');
-            }}
-          />
+          {/* Row 1: 4 Products */}
+          <div className="sp-product-grid">
+            {row1Products.map(renderProductCard)}
+          </div>
+
+          {/* Banner 2: Become an Asset Partner Banner */}
+          <div style={{ margin: '24px 0' }}>
+            <AssetPartnerBanner />
+          </div>
+
+          {/* Available Offers (3 Offers) Section (Requirement 5) */}
+          <AvailableOffers />
+
+          {/* Row 2: 4 Products */}
+          {row2Products.length > 0 && (
+            <div className="sp-product-grid" style={{ marginTop: '24px' }}>
+              {row2Products.map(renderProductCard)}
+            </div>
+          )}
+
+          {/* Banner 3: Rent Out Your Gear Banner */}
+          <div style={{ margin: '24px 0' }}>
+            <RentOutBanner />
+          </div>
+
+          {/* Remaining Products */}
+          {remainingProducts.length > 0 && (
+            <div className="sp-product-grid">
+              {remainingProducts.map(renderProductCard)}
+            </div>
+          )}
 
         </div>
 
@@ -173,13 +232,13 @@ export default function App() {
       {/* 4. Customer Social Proof & Marquee (Image 4) */}
       <ReviewsMarquee />
 
-      {/* 5. Platform Impact Metrics (Image 4) */}
+      {/* 5. Platform Impact Metrics with Gradient Text (Requirement 6 / Image 4) */}
       <ImpactStats />
 
-      {/* 6. FAQs Accordion */}
+      {/* 6. Clean White Card FAQ Section (Requirement 7 / Image 5) */}
       <FAQSection />
 
-      {/* 7. Midnight Blue Footer with Logo & 5 Columns (Image 5) */}
+      {/* 7. Midnight Blue Footer with Logo & 5 Columns */}
       <Footer />
 
       {/* 8. Floating Actions: Black/Lime Date Pill + Lime/Blue Chat Bubble */}

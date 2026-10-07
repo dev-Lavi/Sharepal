@@ -1,12 +1,12 @@
 /* ==========================================================================
-   SHAREPAL PRODUCTION VANILLA CSS - EXACT FIDELITY RECREATION
+   SHAREPAL PRODUCTION VANILLA CSS - EXACT SPECIFICATION RECREATION
    ========================================================================== */
 
 :root {
   /* Brand Palette */
   --sp-header-purple: #4c187c;
   --sp-footer-navy: #050f2c;
-  --sp-electric-blue: #1544e6;
+  --sp-electric-blue: #1945e8;
   --sp-lime-accent: #9eff00;
   --sp-orange-accent: #ea580c;
   --sp-green-accent: #46af0d;
@@ -23,7 +23,7 @@
   --sp-text-gray: #64748b;
   --sp-text-light: #94a3b8;
 
-  /* Fonts */
+  /* Fonts: Inter for Share logo & UI, Ubuntu for headings */
   --sp-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --sp-font-heading: 'Ubuntu', -apple-system, sans-serif;
 }
@@ -72,7 +72,7 @@ a {
 }
 
 /* ==========================================================================
-   1. HEADER WITH EXACT ROYAL BLUE LOGO & CLEAN ICONS (IMAGE 1)
+   1. HEADER WITH UPWARD HIDE SCROLL ANIMATION & HANGING BLUE LOGO (IMAGE 1)
    ========================================================================== */
 .sp-header {
   position: sticky;
@@ -80,6 +80,13 @@ a {
   z-index: 100;
   background: var(--sp-header-purple);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+/* Upward Hide Animation on Scroll (Requirement 3) */
+.sp-header.sp-header-hidden {
+  transform: translateY(-100%);
 }
 
 .sp-header-inner {
@@ -88,37 +95,36 @@ a {
   justify-content: space-between;
   height: 68px;
   gap: 16px;
+  position: relative;
 }
 
-/* Exact Royal Blue SharePal Logo Badge */
-.sp-logo-blue-badge {
+/* Exact Royal Blue SharePal Logo Hanging Badge from Image 1 */
+.sp-logo-wrapper {
+  display: flex;
+  align-items: flex-start;
+  height: 100%;
+}
+
+.sp-logo-hanging-badge {
   background: var(--sp-electric-blue);
-  padding: 6px 18px;
-  border-radius: 8px;
+  height: 68px;
+  width: 146px;
+  border-radius: 0 0 16px 16px;
   display: flex;
   align-items: center;
-  box-shadow: 0 4px 14px rgba(21, 68, 230, 0.35);
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(25, 69, 232, 0.35);
   transition: transform 150ms ease;
+  margin-top: 0;
 }
-.sp-logo-blue-badge:hover {
-  transform: scale(1.02);
-}
-
-.sp-logo-share {
-  color: #ffffff;
-  font-family: var(--sp-font-heading);
-  font-size: 1.55rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+.sp-logo-hanging-badge:hover {
+  transform: translateY(2px);
 }
 
-.sp-logo-pal {
-  color: var(--sp-lime-accent);
-  font-family: var(--sp-font-heading);
-  font-size: 1.55rem;
-  font-weight: 800;
-  font-style: italic;
-  letter-spacing: -0.02em;
+.sp-logo-svg-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
 }
 
 /* Header Center Pill (Location + Dates) */
@@ -181,7 +187,7 @@ a {
   font-weight: 600;
 }
 
-/* Header Right Clean Icons */
+/* Header Right Clean Icons (Requirement 3: Search, Cart, Profile) */
 .sp-header-right {
   display: flex;
   align-items: center;
@@ -236,14 +242,20 @@ a {
 }
 
 /* ==========================================================================
-   2. SUPER CATEGORY BAR
+   2. SUPER CATEGORY BAR WITH DYNAMIC TOP STICKY BEHAVIOR (REQUIREMENT 3)
    ========================================================================== */
-.sp-super-category-bar {
-  background: #ffffff;
-  border-bottom: 1px solid #e2e8f0;
+.sp-super-nav-sticky-wrap {
   position: sticky;
   top: 68px;
-  z-index: 80;
+  z-index: 90;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  transition: top 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sp-super-nav-sticky-wrap.is-top-stuck {
+  top: 0;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
 }
 
 .sp-super-nav-list {
@@ -301,7 +313,7 @@ a {
   padding: 16px 8px;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
   position: sticky;
-  top: 130px;
+  top: 80px;
   flex-shrink: 0;
 }
 
@@ -369,30 +381,19 @@ a {
 }
 
 /* ==========================================================================
-   4. 3-BANNER CAROUSEL (IMAGES 1, 2, 3)
+   4. STANDALONE BANNERS (INTERLEAVED AS IN REQUIREMENT 4)
    ========================================================================== */
-.sp-banner-carousel-wrapper {
-  position: relative;
+.sp-banner-slide-standalone {
   border-radius: 20px;
   overflow: hidden;
-  margin-bottom: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-}
-
-.sp-banner-slider {
-  display: flex;
-  transition: transform 450ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.sp-banner-slide {
-  min-width: 100%;
-  height: 230px;
+  height: 220px;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 32px;
   color: #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
 }
 
 /* Slide 1: Gaming Consoles Banner (Image 1) */
@@ -401,7 +402,7 @@ a {
 }
 
 .sp-banner-art {
-  height: 190px;
+  height: 180px;
   object-fit: contain;
 }
 
@@ -565,53 +566,114 @@ a {
   font-weight: 700;
 }
 
-/* Banner Carousel Nav Arrows */
-.sp-banner-nav-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 32px;
-  height: 32px;
+/* ==========================================================================
+   5. AVAILABLE OFFERS (3 OFFERS) COMPONENT (REQUIREMENT 5 / IMAGE 3)
+   ========================================================================== */
+.sp-available-offers-card {
+  background: #faf5ff;
+  border: 1px solid #ede9fe;
+  border-radius: 20px;
+  padding: 18px 24px;
+  margin: 24px 0;
+}
+
+.sp-offers-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.sp-offers-title {
+  font-family: var(--sp-font-heading);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.sp-offers-nav-arrows {
+  display: flex;
+  gap: 8px;
+}
+
+.sp-offer-arrow-btn {
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.4);
-  color: #ffffff;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
   transition: background 150ms ease;
-  z-index: 5;
 }
-.sp-banner-nav-btn:hover {
-  background: rgba(0, 0, 0, 0.7);
+.sp-offer-arrow-btn:hover {
+  background: #f1f5f9;
 }
-.sp-banner-nav-btn.prev { left: 12px; }
-.sp-banner-nav-btn.next { right: 12px; }
 
-.sp-banner-dots {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
+.sp-offers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.sp-offer-ticket {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
   display: flex;
-  gap: 6px;
-  z-index: 5;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
 }
 
-.sp-banner-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.4);
-  transition: all 200ms ease;
+.sp-ticket-ribbon {
+  background: #7c3aed;
+  color: #ffffff;
+  width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 0;
 }
-.sp-banner-dot.active {
-  width: 18px;
-  border-radius: 4px;
-  background: var(--sp-lime-accent);
+
+.sp-ticket-ribbon-text {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.sp-ticket-content {
+  padding: 10px 12px;
+  flex: 1;
+}
+
+.sp-ticket-code {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #0f172a;
+  display: block;
+}
+
+.sp-ticket-desc {
+  font-size: 0.7rem;
+  color: #64748b;
+  line-height: 1.35;
+  margin-top: 3px;
+}
+
+.sp-ticket-coin-wrapper {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* ==========================================================================
-   5. HEADING & COUNT ROW (IMAGE 1)
+   6. HEADING & COUNT ROW (IMAGE 1)
    ========================================================================== */
 .sp-section-heading-row {
   display: flex;
@@ -636,7 +698,7 @@ a {
 }
 
 /* ==========================================================================
-   6. 4-COLUMN PRODUCT GRID & EXACT CARDS (IMAGE 1, 2, 3)
+   7. 4-COLUMN PRODUCT GRID & EXACT CARDS (IMAGE 1, 2, 3)
    ========================================================================== */
 .sp-product-grid {
   display: grid;
@@ -669,7 +731,6 @@ a {
   z-index: 2;
 }
 
-/* Outline Tag Pill matching Images */
 .sp-card-tag-pill {
   font-size: 0.68rem;
   font-weight: 700;
@@ -707,7 +768,6 @@ a {
   filter: grayscale(70%) opacity(0.65);
 }
 
-/* Image */
 .sp-card-img-container {
   width: 100%;
   height: 160px;
@@ -727,7 +787,6 @@ a {
   transform: scale(1.06);
 }
 
-/* Title & Price */
 .sp-clean-card-footer {
   margin-top: auto;
 }
@@ -767,7 +826,6 @@ a {
   color: #64748b;
 }
 
-/* Circular Plus Button as shown in Image 3 */
 .sp-circle-plus-btn {
   width: 32px;
   height: 32px;
@@ -795,7 +853,7 @@ a {
 }
 
 /* ==========================================================================
-   7. REVIEWS MARQUEE (IMAGE 4)
+   8. REVIEWS MARQUEE (IMAGE 4)
    ========================================================================== */
 .sp-reviews-section {
   padding: 48px 0 24px 0;
@@ -898,7 +956,7 @@ a {
 }
 
 /* ==========================================================================
-   8. PLATFORM IMPACT METRICS (IMAGE 4)
+   9. EXACT BLUE-TO-GREEN GRADIENT METRICS (REQUIREMENT 6 / IMAGE 4)
    ========================================================================== */
 .sp-impact-metrics-section {
   background: #ffffff;
@@ -916,19 +974,35 @@ a {
 
 .sp-metric-figure {
   font-family: var(--sp-font-heading);
-  font-size: 3.1rem;
+  font-size: 3.4rem;
   font-weight: 800;
   line-height: 1.1;
   margin-bottom: 6px;
   letter-spacing: -0.02em;
 }
 
-.sp-num-blue {
-  color: #1544e6;
+/* Exact gradient for 250Cr+ */
+.sp-gradient-metric-1 {
+  background: linear-gradient(90deg, #1044eb 0%, #1044eb 48%, #057ee0 66%, #35b330 84%, #64c61f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
 }
 
-.sp-num-green {
-  color: #52a41c;
+/* Exact gradient for 4.5M Kg */
+.sp-gradient-metric-2 {
+  background: linear-gradient(90deg, #1044eb 0%, #1044eb 42%, #0284c7 60%, #35b330 80%, #64c61f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+/* Exact gradient for 100K+ */
+.sp-gradient-metric-3 {
+  background: linear-gradient(90deg, #1044eb 0%, #1044eb 48%, #057ee0 66%, #35b330 84%, #64c61f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
 }
 
 .sp-metric-text {
@@ -938,68 +1012,89 @@ a {
 }
 
 /* ==========================================================================
-   9. FAQS ACCORDION
+   10. EXACT CLEAN WHITE CARD FAQ SECTION (REQUIREMENT 7 / IMAGE 5)
    ========================================================================== */
-.sp-faq-section {
-  padding: 48px 0;
-  background: #ffffff;
+.sp-faq-section-wrapper {
+  padding: 40px 0;
+  background: #f8fafc;
 }
 
-.sp-faq-header {
-  text-align: center;
-  margin-bottom: 32px;
+.sp-faq-card-container {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 28px 36px;
+  max-width: 1040px;
+  margin: 0 auto;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+  border: 1px solid #f1f5f9;
 }
-.sp-faq-header h2 {
+
+.sp-faq-card-title {
   font-family: var(--sp-font-heading);
-  font-size: 1.85rem;
+  font-size: 1.35rem;
   font-weight: 700;
   color: #0f172a;
+  margin-bottom: 8px;
 }
 
-.sp-faq-accordion-list {
-  max-width: 800px;
-  margin: 0 auto;
+.sp-faq-clean-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
 }
 
-.sp-faq-item {
-  background: #f8fafc;
-  border-radius: 14px;
-  border: 1px solid #e2e8f0;
-  overflow: hidden;
+.sp-faq-clean-item {
+  border-bottom: 1px solid #f1f5f9;
 }
 
-.sp-faq-trigger {
-  width: 100%;
+.sp-faq-clean-question-row {
+  padding: 16px 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px;
-  font-size: 0.95rem;
-  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+}
+
+.sp-faq-clean-question-text {
+  font-size: 0.92rem;
+  font-weight: 500;
   color: #0f172a;
-  text-align: left;
 }
 
-.sp-faq-chevron {
-  transition: transform 200ms ease;
+.sp-faq-clean-chevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sp-faq-clean-answer-box {
+  padding-bottom: 14px;
+  font-size: 0.85rem;
   color: #64748b;
-}
-.sp-faq-item.open .sp-faq-chevron {
-  transform: rotate(180deg);
+  line-height: 1.5;
 }
 
-.sp-faq-answer {
-  padding: 0 20px 18px 20px;
-  color: #475569;
+.sp-faq-btn-wrapper {
+  margin-top: 20px;
+}
+
+.sp-view-more-faqs-btn {
+  background: #f1f5f9;
+  color: #0f172a;
+  font-weight: 600;
   font-size: 0.88rem;
-  line-height: 1.6;
+  padding: 12px;
+  width: 100%;
+  border-radius: 9999px;
+  text-align: center;
+  transition: background 150ms ease;
+}
+.sp-view-more-faqs-btn:hover {
+  background: #e2e8f0;
 }
 
 /* ==========================================================================
-   10. EXACT MIDNIGHT BLUE FOOTER (IMAGE 5)
+   11. EXACT MIDNIGHT BLUE FOOTER (IMAGE 5)
    ========================================================================== */
 .sp-website-footer {
   background: var(--sp-footer-navy);
@@ -1043,7 +1138,6 @@ a {
   margin-top: 8px;
 }
 
-/* Footer Brand Logo Row */
 .sp-footer-brand-row {
   margin-bottom: 28px;
 }
@@ -1107,7 +1201,6 @@ a {
   color: var(--sp-lime-accent);
 }
 
-/* Bottom Copyright Bar */
 .sp-footer-bottom-row {
   display: flex;
   align-items: center;
@@ -1126,7 +1219,7 @@ a {
 }
 
 /* ==========================================================================
-   11. FLOATING WIDGETS (IMAGES 1-4)
+   12. FLOATING WIDGETS
    ========================================================================== */
 .sp-floating-date-pill {
   position: fixed;
@@ -1151,7 +1244,6 @@ a {
   transform: translateX(-50%) translateY(-2px);
 }
 
-/* Lime Circle with Blue Chat Bubble */
 .sp-floating-chat-bubble {
   position: fixed;
   bottom: 24px;
@@ -1172,8 +1264,8 @@ a {
 }
 
 /* ==========================================================================
-   12. MODALS & DRAWERS
-   ========================================================================= */
+   13. MODALS & DRAWERS
+   ========================================================================== */
 .sp-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -1268,6 +1360,9 @@ a {
 @media (max-width: 1024px) {
   .sp-product-grid {
     grid-template-columns: repeat(3, 1fr);
+  }
+  .sp-offers-grid {
+    grid-template-columns: 1fr;
   }
   .sp-footer-links-grid {
     grid-template-columns: repeat(3, 1fr);
