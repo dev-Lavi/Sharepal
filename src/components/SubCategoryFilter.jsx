@@ -26,6 +26,11 @@ export const verticalCategories = [
     id: 'vr',
     name: 'VR',
     image: 'https://images.sharepal.in/sub-category-card/vr-on-rent-sharepal.webp'
+  },
+  {
+    id: 'racing',
+    name: 'Racing Wheel',
+    image: 'https://images.sharepal.in/sub-category-card/racing-wheel-on-rent-sharepal.webp'
   }
 ];
 
@@ -47,7 +52,15 @@ export default function SubCategoryFilter({ selectedSubCat, onSelectSubCat }) {
                 {item.isSmiley ? (
                   <Smile size={28} color="#2563EB" strokeWidth={2.2} />
                 ) : (
-                  <img src={item.image} alt={item.name} className="sp-dock-thumb" />
+                  <img 
+                    src={item.image} 
+                    alt={item.name} 
+                    className="sp-dock-thumb"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = 'https://images.sharepal.in/sub-category-card/vr-on-rent-sharepal.webp';
+                    }}
+                  />
                 )}
               </div>
               <span className={`sp-vertical-dock-label ${isActive ? 'active' : ''}`}>

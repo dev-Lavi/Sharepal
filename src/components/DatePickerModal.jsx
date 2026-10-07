@@ -1,264 +1,359 @@
-import React, { useState } from 'react';
-import { X, Calendar, Clock, CheckCircle2, AlertCircle } from 'lucide-react';
+import React, { useState, useCallback, useMemo } from 'react';
+import { X, Calendar, ChevronLeft, ChevronRight, Info, Percent } from 'lucide-react';
+
+/* ── Date Helpers ── */
+const startOfDay = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+const addDays = (d, n) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
+const addMonths = (d, n) => new Date(d.getFullYear(), d.getMonth() + n, 1);
+const dayDiff = (a, b) => Math.round((startOfDay(a) - startOfDay(b)) / 864e5);
+const sameDay = (a, b) => Boolean(a && b && dayDiff(a, b) === 0);
+
+const MONTHS = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
+];
+const SHORT_MONTHS = [
+  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+];
+const WEEKDAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+
+function formatDisplay(d) {
+  if (!d) return '';
+  return `${SHORT_MONTHS[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+}
+
+function formatDayWithSuffix(d) {
+  if (!d) return '';
+  const day = d.getDate();
+  let suffix = 'th';
+  if (day === 1 || day === 21 || day === 31) suffix = 'st';
+  else if (day === 2 || day === 22) suffix = 'nd';
+  else if (day === 3 || day === 23) suffix = 'rd';
+  return `${day}${suffix} ${SHORT_MONTHS[d.getMonth()]}`;
+}
+
+/** Build a 6-week matrix for any month */
+function buildGrid(year, month) {
+  const firstDay = new Date(year, month, 1);
+  const startCol = firstDay.getDay(); // 0=Sunday
+  const rows = [];
+  let current = new Date(year, month, 1 - startCol);
+  for (let r = 0; r < 6; r++) {
+    const week = [];
+    for (let c = 0; c < 7; c++) {
+      week.push(new Date(current));
+      current = addDays(current, 1);
+    }
+    rows.push(week);
+  }
+  return rows;
+}
+
+/** Single Month Grid Component */
+function MonthView({
+  year,
+  month,
+  startDate,
+  endDate,
+  hoverDate,
+  anchorDate,
+  onPick,
+  onHover,
+  minDate
+}) {
+  const grid = useMemo(() => buildGrid(year, month), [year, month]);
+
+  // Compute active range
+  const lo = anchorDate
+    ? (hoverDate && dayDiff(hoverDate, anchorDate) < 0 ? hoverDate : anchorDate)
+    : startDate;
+  const hi = anchorDate
+    ? (hoverDate && dayDiff(hoverDate, anchorDate) < 0 ? anchorDate : (hoverDate || anchorDate))
+    : endDate;
+
+  return (
+    <div className="sp-dp-month">
+      <div className="sp-dp-month-header">
+        <span className="sp-dp-month-title">{MONTHS[month]} {year}</span>
+      </div>
+
+      <div className="sp-dp-weekdays">
+        {WEEKDAYS.map(w => (
+          <span key={w} className="sp-dp-weekday">{w}</span>
+        ))}
+      </div>
+
+      <div className="sp-dp-weeks-container">
+        {grid.map((week, rowIndex) => (
+          <div key={rowIndex} className="sp-dp-week-row">
+            {week.map((date, colIndex) => {
+              const inCurrentMonth = date.getMonth() === month;
+              const isPast = minDate && dayDiff(date, minDate) < 0;
+              const isDisabled = isPast;
+
+              const isStart = lo && sameDay(date, lo);
+              const isEnd = hi && sameDay(date, hi);
+              const inRange = lo && hi && dayDiff(date, lo) >= 0 && dayDiff(date, hi) <= 0;
+              const isSingleDay = lo && hi && sameDay(lo, hi) && (isStart || isEnd);
+
+              return (
+                <div
+                  key={colIndex}
+                  className={[
+                    'sp-dp-day-cell',
+                    !inCurrentMonth ? 'sp-dp-other-month' : '',
+                    isDisabled ? 'sp-dp-disabled' : '',
+                    inRange ? 'sp-dp-in-range' : '',
+                    isStart ? 'sp-dp-range-start' : '',
+                    isEnd ? 'sp-dp-range-end' : '',
+                    isSingleDay ? 'sp-dp-single-day' : ''
+                  ].filter(Boolean).join(' ')}
+                  onClick={() => !isDisabled && onPick(date)}
+                  onMouseEnter={() => !isDisabled && onHover(date)}
+                >
+                  <span className="sp-dp-day-text">
+                    {date.getDate()}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function DatePickerModal({ isOpen, onClose, onApplyDates, currentDates }) {
-  if (!isOpen) return null;
+  const today = useMemo(() => startOfDay(new Date()), []);
 
-  // Default to today + 1 day for delivery
-  const today = new Date();
-  const formatInputDate = (d) => d.toISOString().split('T')[0];
+  // Default range: either existing or 2026 / current date
+  const initialStart = useMemo(() => {
+    if (currentDates?.startDate) return startOfDay(new Date(currentDates.startDate));
+    return addDays(today, 1);
+  }, [currentDates, today]);
 
-  const defaultStart = new Date(today);
-  defaultStart.setDate(today.getDate() + 1);
+  const initialEnd = useMemo(() => {
+    if (currentDates?.endDate) return startOfDay(new Date(currentDates.endDate));
+    return addDays(initialStart, 34); // ~34 days default tenure
+  }, [currentDates, initialStart]);
 
-  const defaultEnd = new Date(defaultStart);
-  defaultEnd.setDate(defaultStart.getDate() + 3);
+  const [start, setStart] = useState(initialStart);
+  const [end, setEnd] = useState(initialEnd);
+  const [anchor, setAnchor] = useState(null);
+  const [hover, setHover] = useState(null);
 
-  const [startDate, setStartDate] = useState(
-    currentDates?.startDate ? currentDates.startDate : formatInputDate(defaultStart)
-  );
-  const [endDate, setEndDate] = useState(
-    currentDates?.endDate ? currentDates.endDate : formatInputDate(defaultEnd)
-  );
+  const [viewDate, setViewDate] = useState(() => startOfDay(initialStart));
 
-  // Calculate rental days
-  const start = new Date(startDate);
-  const end = new Date(endDate);
-  const diffTime = end.getTime() - start.getTime();
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  const isValid = diffDays >= 2;
+  const viewYear1 = viewDate.getFullYear();
+  const viewMonth1 = viewDate.getMonth();
 
-  const formatDateDisplay = (dateStr) => {
-    if (!dateStr) return '';
-    const d = new Date(dateStr);
-    return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+  const nextMonthDate = addMonths(viewDate, 1);
+  const viewYear2 = nextMonthDate.getFullYear();
+  const viewMonth2 = nextMonthDate.getMonth();
+
+  const prevMonth = () => {
+    setViewDate(prev => addMonths(prev, -1));
   };
 
-  const handleApplyPreset = (daysCount) => {
-    const s = new Date(startDate || defaultStart);
-    const e = new Date(s);
-    e.setDate(s.getDate() + daysCount);
-    setEndDate(formatInputDate(e));
+  const nextMonth = () => {
+    setViewDate(prev => addMonths(prev, 1));
   };
 
-  const handleConfirm = () => {
-    if (!isValid) return;
+  const handlePick = useCallback((date) => {
+    if (!anchor) {
+      setAnchor(date);
+      setStart(date);
+      setEnd(null);
+      setHover(date);
+    } else {
+      const isBefore = dayDiff(date, anchor) < 0;
+      const s = isBefore ? date : anchor;
+      const e = isBefore ? anchor : date;
+      setStart(s);
+      setEnd(e);
+      setAnchor(null);
+      setHover(null);
+    }
+  }, [anchor]);
+
+  const handleHover = useCallback((date) => {
+    if (anchor) {
+      setHover(date);
+    }
+  }, [anchor]);
+
+  // Display range
+  const lo = anchor ? (hover && dayDiff(hover, anchor) < 0 ? hover : anchor) : start;
+  const hi = anchor ? (hover && dayDiff(hover, anchor) < 0 ? anchor : (hover || anchor)) : end;
+
+  const totalDays = lo && hi ? Math.max(1, dayDiff(hi, lo)) : 0;
+  // Chargeable period is between start+1 and end-1 (excluding delivery & pickup days)
+  const chargeableStart = lo ? addDays(lo, 1) : null;
+  const chargeableEnd = hi ? addDays(hi, -1) : null;
+  const hasChargeable = chargeableStart && chargeableEnd && dayDiff(chargeableEnd, chargeableStart) >= 0;
+
+  const handleContinue = () => {
+    if (!start || !end) return;
+    const fmt = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     onApplyDates({
-      startDate,
-      endDate,
-      days: diffDays,
-      startDateFormatted: formatDateDisplay(startDate),
-      endDateFormatted: formatDateDisplay(endDate)
+      startDate: fmt(start),
+      endDate: fmt(end),
+      days: totalDays,
+      startDateFormatted: formatDisplay(start),
+      endDateFormatted: formatDisplay(end)
     });
     onClose();
   };
 
-  return (
-    <div className="sp-modal-backdrop" onClick={onClose}>
-      <div className="sp-modal-dialog" onClick={(e) => e.stopPropagation()}>
-        
-        {/* Header */}
-        <div className="sp-modal-header">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{
-              width: '38px', 
-              height: '38px', 
-              borderRadius: '50%', 
-              background: '#f4ecfc', 
-              color: '#4c187c', 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'center'
-            }}>
-              <Calendar size={20} />
-            </div>
-            <div>
-              <h3 style={{ margin: 0, fontSize: '1.2rem', color: '#111827' }}>Select Rental Dates</h3>
-              <p style={{ margin: 0, fontSize: '0.8rem', color: '#6b7280' }}>
-                Delivery in Bangalore • Zero Security Deposit
-              </p>
-            </div>
-          </div>
+  if (!isOpen) return null;
 
-          <button type="button" className="sp-close-btn" onClick={onClose}>
-            <X size={18} />
+  return (
+    <div className="sp-dp-overlay" onClick={onClose} role="dialog" aria-modal="true">
+      <div className="sp-dp-container" onClick={e => e.stopPropagation()}>
+
+        {/* Modal Header */}
+        <div className="sp-dp-header">
+          <h2 className="sp-dp-title">Select your Dates</h2>
+          <button type="button" className="sp-dp-close" onClick={onClose} aria-label="Close modal">
+            <X size={20} />
           </button>
         </div>
 
-        {/* Content Body */}
-        <div style={{ padding: '24px' }}>
-          
-          {/* Quick Presets */}
-          <div style={{ marginBottom: '20px' }}>
-            <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#4b5563', textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
-              Popular Rental Durations
-            </span>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
-              <button
-                type="button"
-                style={{
-                  padding: '10px 14px',
-                  borderRadius: '12px',
-                  border: diffDays === 3 ? '2px solid #4c187c' : '1px solid #e5e7eb',
-                  background: diffDays === 3 ? '#faf5ff' : '#fff',
-                  textAlign: 'left',
-                  cursor: 'pointer'
-                }}
-                onClick={() => handleApplyPreset(3)}
-              >
-                <div style={{ fontWeight: 700, fontSize: '0.88rem', color: '#111827' }}>Weekend Blast (3 Days)</div>
-                <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>Perfect for weekend gaming</div>
-              </button>
+        {/* Modal Main Layout */}
+        <div className="sp-dp-content">
 
-              <button
-                type="button"
-                style={{
-                  padding: '10px 14px',
-                  borderRadius: '12px',
-                  border: diffDays === 7 ? '2px solid #4c187c' : '1px solid #e5e7eb',
-                  background: diffDays === 7 ? '#faf5ff' : '#fff',
-                  textAlign: 'left',
-                  cursor: 'pointer'
-                }}
-                onClick={() => handleApplyPreset(7)}
-              >
-                <div style={{ fontWeight: 700, fontSize: '0.88rem', color: '#111827' }}>
-                  1 Week (7 Days) <span style={{ color: '#10b981', fontSize: '0.75rem' }}>Save 25%</span>
+          {/* Left Summary & Action Panel */}
+          <div className="sp-dp-left-col">
+            
+            {/* Delivery & Pickup Date Inputs */}
+            <div className="sp-dp-inputs-row">
+              <div className="sp-dp-input-box">
+                <span className="sp-dp-input-label">Delivery Date <span className="sp-dp-asterisk">*</span></span>
+                <div className="sp-dp-input-val">
+                  <Calendar size={16} color="#475569" />
+                  <span>{lo ? formatDisplay(lo) : 'Select date'}</span>
                 </div>
-                <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>Most popular choice</div>
-              </button>
+              </div>
 
-              <button
-                type="button"
-                style={{
-                  padding: '10px 14px',
-                  borderRadius: '12px',
-                  border: diffDays === 14 ? '2px solid #4c187c' : '1px solid #e5e7eb',
-                  background: diffDays === 14 ? '#faf5ff' : '#fff',
-                  textAlign: 'left',
-                  cursor: 'pointer'
-                }}
-                onClick={() => handleApplyPreset(14)}
-              >
-                <div style={{ fontWeight: 700, fontSize: '0.88rem', color: '#111827' }}>
-                  2 Weeks (14 Days) <span style={{ color: '#10b981', fontSize: '0.75rem' }}>Save 35%</span>
-                </div>
-                <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>Vacation & holidays</div>
-              </button>
-
-              <button
-                type="button"
-                style={{
-                  padding: '10px 14px',
-                  borderRadius: '12px',
-                  border: diffDays === 30 ? '2px solid #4c187c' : '1px solid #e5e7eb',
-                  background: diffDays === 30 ? '#faf5ff' : '#fff',
-                  textAlign: 'left',
-                  cursor: 'pointer'
-                }}
-                onClick={() => handleApplyPreset(30)}
-              >
-                <div style={{ fontWeight: 700, fontSize: '0.88rem', color: '#111827' }}>
-                  1 Month (30 Days) <span style={{ color: '#10b981', fontSize: '0.75rem' }}>Save 45%</span>
-                </div>
-                <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>Unbeatable per-day rate</div>
-              </button>
-            </div>
-          </div>
-
-          {/* Date Range Inputs */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '14px', marginBottom: '20px' }}>
-            <div>
-              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#374151', marginBottom: '6px' }}>
-                Delivery Date (Between 10 AM - 6 PM)
-              </label>
-              <input
-                type="date"
-                min={formatInputDate(today)}
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '10px 12px',
-                  borderRadius: '10px',
-                  border: '1.5px solid #d1d5db',
-                  fontSize: '0.9rem',
-                  fontFamily: 'inherit'
-                }}
-              />
-            </div>
-
-            <div>
-              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: '#374151', marginBottom: '6px' }}>
-                Pickup / Return Date
-              </label>
-              <input
-                type="date"
-                min={startDate}
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '10px 12px',
-                  borderRadius: '10px',
-                  border: '1.5px solid #d1d5db',
-                  fontSize: '0.9rem',
-                  fontFamily: 'inherit'
-                }}
-              />
-            </div>
-          </div>
-
-          {/* Duration Summary */}
-          {isValid ? (
-            <div style={{
-              background: '#ecfdf5',
-              border: '1px solid #10b981',
-              borderRadius: '12px',
-              padding: '12px 16px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              marginBottom: '20px'
-            }}>
-              <CheckCircle2 size={20} color="#10b981" />
-              <div>
-                <div style={{ fontWeight: 700, fontSize: '0.9rem', color: '#065f46' }}>
-                  {diffDays} Days Rental Selected
-                </div>
-                <div style={{ fontSize: '0.78rem', color: '#047857' }}>
-                  Delivery: {formatDateDisplay(startDate)} • Pickup: {formatDateDisplay(endDate)}
+              <div className="sp-dp-input-box">
+                <span className="sp-dp-input-label">Pickup Date <span className="sp-dp-asterisk">*</span></span>
+                <div className="sp-dp-input-val">
+                  <Calendar size={16} color="#475569" />
+                  <span>{hi ? formatDisplay(hi) : 'Select date'}</span>
                 </div>
               </div>
             </div>
-          ) : (
-            <div style={{
-              background: '#fef2f2',
-              border: '1px solid #ef4444',
-              borderRadius: '12px',
-              padding: '12px 16px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              marginBottom: '20px'
-            }}>
-              <AlertCircle size={20} color="#ef4444" />
-              <div style={{ fontSize: '0.85rem', color: '#991b1b', fontWeight: 600 }}>
-                Minimum rental period is 2 days. Please choose a later return date.
+
+            {/* Same-day delivery notification box */}
+            <div className="sp-dp-info-box">
+              <Info size={18} className="sp-dp-info-icon" />
+              <p className="sp-dp-info-text">
+                <strong>Same-day delivery</strong> between 5PM and 11PM. For future dates, you can select a specific time slot available at checkout. We pickup between <strong>9AM to 1PM.</strong>
+              </p>
+            </div>
+
+            {/* Rental Period Badge */}
+            <div className="sp-dp-period-section">
+              <span className="sp-dp-period-heading">Your Rental Period:</span>
+              <div className="sp-dp-period-details">
+                <div className="sp-dp-period-days">
+                  <span className="sp-dp-days-count">{totalDays}</span>
+                  <span className="sp-dp-days-unit">Days</span>
+                </div>
+                <div className="sp-dp-chargeable-box">
+                  <span className="sp-dp-chargeable-title">Chargeable Period:</span>
+                  <div className="sp-dp-chargeable-dates">
+                    <Calendar size={14} color="#64748B" />
+                    <span>
+                      {hasChargeable 
+                        ? `${formatDayWithSuffix(chargeableStart)} - ${formatDayWithSuffix(chargeableEnd)}`
+                        : 'Same as rental period'}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
-          )}
 
-          {/* Confirm Button */}
-          <button
-            type="button"
-            className="sp-btn-rent-now"
-            style={{ width: '100%', padding: '14px', borderRadius: '9999px', fontSize: '1rem' }}
-            disabled={!isValid}
-            onClick={handleConfirm}
-          >
-            Confirm Rental Dates ({diffDays} Days)
-          </button>
+            {/* Save More Banner */}
+            <div className="sp-dp-save-banner">
+              <div className="sp-dp-save-header">
+                <div className="sp-dp-percent-badge">
+                  <Percent size={14} strokeWidth={3} />
+                </div>
+                <span className="sp-dp-save-title">Save more with us!</span>
+              </div>
+              <p className="sp-dp-save-desc">
+                Longer rental periods mean bigger savings—enjoy discounts of up to 12%. We don't charge you for deliver and pickup days!
+              </p>
+            </div>
+
+            {/* Blue Continue Button */}
+            <button
+              type="button"
+              className="sp-dp-continue-btn"
+              onClick={handleContinue}
+              disabled={!start || !end}
+            >
+              Continue
+            </button>
+
+          </div>
+
+          {/* Right Dual Calendar Panel */}
+          <div className="sp-dp-right-col">
+            
+            {/* Navigation Arrows */}
+            <div className="sp-dp-calendar-nav-bar">
+              <button 
+                type="button" 
+                className="sp-dp-nav-arrow left" 
+                onClick={prevMonth}
+                aria-label="Previous month"
+              >
+                <ChevronLeft size={18} />
+              </button>
+
+              <button 
+                type="button" 
+                className="sp-dp-nav-arrow right" 
+                onClick={nextMonth}
+                aria-label="Next month"
+              >
+                <ChevronRight size={18} />
+              </button>
+            </div>
+
+            <div className="sp-dp-dual-calendars">
+              {/* Calendar 1 */}
+              <MonthView
+                year={viewYear1}
+                month={viewMonth1}
+                startDate={start}
+                endDate={end}
+                hoverDate={hover}
+                anchorDate={anchor}
+                onPick={handlePick}
+                onHover={handleHover}
+                minDate={today}
+              />
+
+              {/* Calendar 2 */}
+              <MonthView
+                year={viewYear2}
+                month={viewMonth2}
+                startDate={start}
+                endDate={end}
+                hoverDate={hover}
+                anchorDate={anchor}
+                onPick={handlePick}
+                onHover={handleHover}
+                minDate={today}
+              />
+            </div>
+
+          </div>
 
         </div>
 

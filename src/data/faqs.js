@@ -37,12 +37,18 @@ export const faqs = [
   },
   {
     id: 7,
+    question: "What is the minimum rental period?",
+    answer: "The minimum rental duration is 2 days. For certain fragile products or festival surges, the minimum rental period may vary as indicated on the product page.",
+    category: "How it works?"
+  },
+  {
+    id: 8,
     question: "Is there any security deposit required?",
     answer: "No! SharePal offers 100% Zero Security Deposit on gaming gadgets in Bangalore following a quick 2-minute digital profile verification. No locked-up funds or waiting for deposit refunds.",
     category: "Deposit & Pricing"
   },
   {
-    id: 8,
+    id: 9,
     question: "What comes inside the PS5 Console rental kit?",
     answer: "Every PS5 kit comes complete with the Sony PlayStation 5 Console, DualSense Wireless Controller(s), HDMI 2.1 Ultra High Speed Cable, AC Power Cable, USB-C Controller Charging Cable, and preloaded top games or PS Plus Deluxe subscription access depending on your selected bundle.",
     category: "Gaming Kit"

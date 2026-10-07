@@ -22,7 +22,7 @@ export default function FloatingActions({ onOpenDateModal, rentalDates }) {
         </span>
       </button>
 
-      {/* Floating Chatbot Widget with Exact SVG & Animation (Requirement 4) */}
+      {/* Floating Chatbot Widget */}
       <ChatbotWidget />
     </>
   );

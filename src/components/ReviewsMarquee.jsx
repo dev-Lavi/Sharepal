@@ -9,7 +9,7 @@ export default function ReviewsMarquee() {
     <section className="sp-reviews-section">
       <div className="sp-container">
         
-        {/* Increased Font Size Title as requested in Requirement 6 and shown in Image 3 */}
+        {/* Section Header */}
         <div className="sp-reviews-header">
           <h2 className="sp-reviews-title-large">
             Served more than <span style={{ color: '#ea580c' }}>1 Lakh Orders</span>

@@ -5,7 +5,8 @@ import {
   Search, 
   ShoppingCart, 
   User, 
-  ChevronDown 
+  ChevronDown,
+  X 
 } from 'lucide-react';
 
 export default function Header({ 
@@ -16,16 +17,21 @@ export default function Header({
   cartCount, 
   onOpenCart,
   onOpenSearch,
-  isHeaderHidden
+  isHeaderHidden,
+  isSearchOpen,
+  searchQuery,
+  setSearchQuery
 }) {
   const hasDates = rentalDates && rentalDates.days > 0;
 
   return (
     <header className={`sp-header ${isHeaderHidden ? 'sp-header-hidden' : ''}`}>
       <div className="sp-container">
+        
+        {/* Main Header Row */}
         <div className="sp-header-inner">
           
-          {/* Exact SharePal Logo Hanging Blue Badge (Image 1) */}
+          {/* SharePal Logo Hanging Blue Badge */}
           <a href="#" className="sp-logo-wrapper" aria-label="SharePal Home">
             <div className="sp-logo-hanging-badge">
               <div className="sp-logo-svg-group">
@@ -41,8 +47,8 @@ export default function Header({
             </div>
           </a>
 
-          {/* Center Location & Date Selector Bar */}
-          <div className="sp-header-center-pill">
+          {/* Desktop Center Location & Date Selector Bar */}
+          <div className="sp-header-center-pill desktop-only">
             <button 
               type="button" 
               className="sp-city-btn"
@@ -80,17 +86,56 @@ export default function Header({
             </button>
           </div>
 
-          {/* Right Header Navigation Icons (Search, Cart, Profile) */}
-          <div className="sp-header-right">
+          {/* Mobile Right Bar: Bangalore Selector & Profile Icon */}
+          <div className="sp-mobile-header-right mobile-only">
             <button 
               type="button" 
-              className="sp-icon-btn-clean"
-              onClick={onOpenSearch}
-              aria-label="Search Catalog"
-              title="Search"
+              className="sp-mobile-city-pill"
+              onClick={onOpenCityModal}
             >
-              <Search size={22} color="#ffffff" strokeWidth={2.2} />
+              <MapPin size={14} />
+              <span>{currentCity.name}</span>
+              <ChevronDown size={13} />
             </button>
+
+            <div className="sp-mobile-user-avatar">
+              <User size={18} color="#ffffff" strokeWidth={2.2} />
+            </div>
+          </div>
+
+          {/* Desktop Right Navigation Icons (Search, Cart, Profile) */}
+          <div className="sp-header-right desktop-only">
+            {isSearchOpen ? (
+              <div className="sp-header-search-box">
+                <Search size={18} color="#64748b" className="sp-header-search-icon" />
+                <input
+                  type="text"
+                  className="sp-header-search-input"
+                  placeholder="Search consoles, games, controllers..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  autoFocus
+                />
+                <button
+                  type="button"
+                  className="sp-header-search-close-btn"
+                  onClick={onOpenSearch}
+                  aria-label="Close search"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+            ) : (
+              <button 
+                type="button" 
+                className="sp-icon-btn-clean"
+                onClick={onOpenSearch}
+                aria-label="Search Catalog"
+                title="Search"
+              >
+                <Search size={22} color="#ffffff" strokeWidth={2.2} />
+              </button>
+            )}
 
             <button 
               type="button" 
@@ -109,11 +154,53 @@ export default function Header({
               <div className="sp-user-avatar-circle">
                 <User size={18} color="#4C187C" />
               </div>
-              <span className="desktop-only" style={{ color: '#ffffff', fontWeight: 600 }}>Hi, Login</span>
+              <span style={{ color: '#ffffff', fontWeight: 600 }}>Hi, Login</span>
             </div>
           </div>
 
         </div>
+
+        {/* Mobile Full-Width Date Selection Bar */}
+        <div className="sp-mobile-date-bar mobile-only" onClick={onOpenDateModal}>
+          <div className="sp-mobile-date-content">
+            <Calendar size={18} className="sp-mobile-date-icon" />
+            <span className="sp-mobile-date-text">
+              {hasDates 
+                ? `Rent For: ${rentalDates.startDateFormatted} • ${rentalDates.endDateFormatted}` 
+                : 'Select Rental Dates'}
+            </span>
+          </div>
+          <button type="button" className="sp-mobile-select-btn">
+            <Calendar size={13} />
+            <span>{hasDates ? 'Edit' : 'Select'}</span>
+          </button>
+        </div>
+
+        {/* Mobile Search Bar inside Header when toggled */}
+        {isSearchOpen && (
+          <div className="sp-mobile-header-search mobile-only">
+            <div className="sp-mobile-header-search-inner">
+              <Search size={16} color="#64748b" />
+              <input
+                type="text"
+                className="sp-mobile-header-search-input"
+                placeholder="Search consoles, games, controllers..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                autoFocus
+              />
+              <button
+                type="button"
+                className="sp-mobile-header-search-close"
+                onClick={onOpenSearch}
+                aria-label="Close search"
+              >
+                <X size={16} />
+              </button>
+            </div>
+          </div>
+        )}
+
       </div>
     </header>
   );

@@ -5,7 +5,6 @@ import { GamingBanner, AssetPartnerBanner, RentOutBanner } from './components/He
 import SubCategoryFilter from './components/SubCategoryFilter';
 import ProductFilterBar from './components/ProductFilterBar';
 import ProductCard from './components/ProductCard';
-import AvailableOffers from './components/AvailableOffers';
 import FAQSection from './components/FAQSection';
 import ReviewsMarquee from './components/ReviewsMarquee';
 import ImpactStats from './components/ImpactStats';
@@ -15,6 +14,7 @@ import DatePickerModal from './components/DatePickerModal';
 import CartDrawer from './components/CartDrawer';
 import QuickViewModal from './components/QuickViewModal';
 import CityModal from './components/CityModal';
+import BottomNav from './components/BottomNav';
 
 import { products, cities } from './data/products';
 
@@ -42,10 +42,10 @@ export default function App() {
   const [isCityModalOpen, setIsCityModalOpen] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState(null);
 
-  // Show More State for Product Listing (Requirement 3)
+  // Pagination / Display limit for product catalog
   const [showAllProducts, setShowAllProducts] = useState(false);
 
-  // Scroll Header Upward Hide Animation State (Requirement 3)
+  // Scroll header hide animation state
   const [isHeaderHidden, setIsHeaderHidden] = useState(false);
 
   useEffect(() => {
@@ -117,7 +117,9 @@ export default function App() {
       } else if (selectedSubCat === 'xbox') {
         result = result.filter(p => p.name.toLowerCase().includes('xbox'));
       } else if (selectedSubCat === 'vr') {
-        result = result.filter(p => p.name.includes('Portal') || p.name.includes('VR') || p.name.includes('Racing'));
+        result = result.filter(p => p.name.includes('Portal') || p.name.includes('VR'));
+      } else if (selectedSubCat === 'racing') {
+        result = result.filter(p => p.name.toLowerCase().includes('racing') || p.name.toLowerCase().includes('wheel'));
       }
     }
 
@@ -133,7 +135,7 @@ export default function App() {
     return result;
   }, [products, selectedSubCat, searchQuery]);
 
-  // Segmentation for Interleaved Layout (Requirement 2 & 3)
+  // Layout segmentation for interleaved banners
   const row1Products = filteredProducts.slice(0, 4);
   const row2Products = filteredProducts.slice(4, 8);
   const row3Products = filteredProducts.slice(8, 12);
@@ -154,7 +156,7 @@ export default function App() {
   return (
     <div className="sp-app-root">
       
-      {/* 1. Header with exact official hanging blue logo, date/city selector, search, cart, login */}
+      {/* 1. Header with brand logo, date/city selector, search, cart, login */}
       <Header
         currentCity={currentCity}
         onOpenCityModal={() => setIsCityModalOpen(true)}
@@ -164,9 +166,12 @@ export default function App() {
         onOpenCart={() => setIsCartOpen(true)}
         onOpenSearch={() => setIsSearchOpen(!isSearchOpen)}
         isHeaderHidden={isHeaderHidden}
+        isSearchOpen={isSearchOpen}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
       />
 
-      {/* 2. Super Category Navigation Bar (Sticky with dynamic top position) */}
+      {/* 2. Super Category Navigation Bar */}
       <div className={`sp-super-nav-sticky-wrap ${isHeaderHidden ? 'is-top-stuck' : ''}`}>
         <SuperCategoryNav
           activeCategory={activeSuperCat}
@@ -174,41 +179,40 @@ export default function App() {
         />
       </div>
 
-      {/* 3. Main Split View: Vertical Dock (Left) + Interleaved Content (Right) */}
+      {/* Mobile Top Hero Banner: Full Width on smaller devices */}
+      <div className="sp-container sp-mobile-hero-banner-wrapper mobile-only">
+        <GamingBanner />
+      </div>
+
+      {/* 3. Main Split View: Vertical Dock + Catalog Content */}
       <div className="sp-container sp-main-catalog-layout">
         
-        {/* Left: Vertical Category Dock */}
+        {/* Left: Category Navigation */}
         <SubCategoryFilter
           selectedSubCat={selectedSubCat}
           onSelectSubCat={setSelectedSubCat}
         />
 
-        {/* Right: Interleaved Banners, Products & Offers */}
+        {/* Right: Products and Interleaved Banners */}
         <div className="sp-catalog-main-content">
           
-          {/* Banner 1: Gaming Consoles Banner with Exact Brand SVGs */}
-          <GamingBanner />
+          {/* Desktop Top Hero Banner: Aligned inside catalog column next to vertical dock */}
+          <div className="sp-desktop-hero-banner-wrapper desktop-only">
+            <GamingBanner />
+          </div>
 
-          {/* Section Heading & Item Count: "Gaming Gadgets On Rent | Total items: 50 items" */}
-          <ProductFilterBar
-            totalCount={50}
-            isSearchOpen={isSearchOpen}
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-          />
+          {/* Section Heading & Item Count */}
+          <ProductFilterBar totalCount={50} />
 
           {/* Row 1: 4 Products */}
           <div className="sp-product-grid">
             {row1Products.map(renderProductCard)}
           </div>
 
-          {/* Banner 2: Become an Asset Partner Banner (assets-fund-banner.webp) */}
+          {/* Banner 2: Asset Partner Banner */}
           <div style={{ margin: '24px 0' }}>
             <AssetPartnerBanner />
           </div>
-
-          {/* Available Offers (3 Offers) Section */}
-          <AvailableOffers />
 
           {/* Row 2: 4 Products */}
           {row2Products.length > 0 && (
@@ -217,7 +221,7 @@ export default function App() {
             </div>
           )}
 
-          {/* Banner 3: Rent Out Your Gear Banner (ews-generic-banner-desktop.webp) */}
+          {/* Banner 3: Rent Out Your Gear Banner */}
           <div style={{ margin: '24px 0' }}>
             <RentOutBanner />
           </div>
@@ -236,7 +240,7 @@ export default function App() {
             </div>
           )}
 
-          {/* "Showing 12 of 50 results" + "Show More" Button (Requirement 3 / Image 2) */}
+          {/* Pagination summary & expansion toggle */}
           <div className="sp-show-more-container">
             <p className="sp-showing-results-text">
               Showing {showAllProducts ? (12 + extraProducts.length) : 12} of 50 results
@@ -254,19 +258,19 @@ export default function App() {
 
       </div>
 
-      {/* 4. FAQ Section APPEARS BEFORE "Served more than 1 Lakh Orders" (Requirement 5) */}
+      {/* 4. FAQ Section */}
       <FAQSection />
 
-      {/* 5. "Served more than 1 Lakh Orders" with Increased Font Size (Requirement 6 / Image 3) */}
+      {/* 5. Verified Customer Reviews */}
       <ReviewsMarquee />
 
-      {/* 6. Platform Impact Metrics with Horizontal Gradient (Image 3) */}
+      {/* 6. Platform Impact Metrics */}
       <ImpactStats />
 
-      {/* 7. Midnight Blue Footer with Logo & 5 Columns */}
+      {/* 7. Footer */}
       <Footer />
 
-      {/* 8. Floating Actions: Black/Lime Date Pill + Animated Chatbot Widget (Requirement 4) */}
+      {/* 8. Floating Actions: Date pill & Chatbot */}
       <FloatingActions
         onOpenDateModal={() => setIsDateModalOpen(true)}
         rentalDates={rentalDates}
@@ -311,6 +315,13 @@ export default function App() {
         onClose={() => setIsCityModalOpen(false)}
         currentCity={currentCity}
         onSelectCity={(city) => setCurrentCity(city)}
+      />
+
+      {/* 10. Mobile Bottom Navigation Bar */}
+      <BottomNav
+        cartCount={totalCartCount}
+        onOpenCart={() => setIsCartOpen(true)}
+        onOpenSearch={() => setIsSearchOpen(!isSearchOpen)}
       />
 
     </div>
