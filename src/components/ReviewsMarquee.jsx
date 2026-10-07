@@ -9,9 +9,9 @@ export default function ReviewsMarquee() {
     <section className="sp-reviews-section">
       <div className="sp-container">
         
-        {/* Title as shown in Image 4 */}
+        {/* Increased Font Size Title as requested in Requirement 6 and shown in Image 3 */}
         <div className="sp-reviews-header">
-          <h2 className="sp-reviews-title-clean">
+          <h2 className="sp-reviews-title-large">
             Served more than <span style={{ color: '#ea580c' }}>1 Lakh Orders</span>
           </h2>
         </div>
@@ -24,7 +24,7 @@ export default function ReviewsMarquee() {
           {doubledReviews.map((rev, index) => (
             <div key={`${rev.id}-${index}`} className="sp-review-clean-card">
               
-              {/* Google + Stars Header */}
+              {/* Google + 5 Gold Stars */}
               <div className="sp-review-card-top-row">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
                   <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09" />
@@ -39,12 +39,12 @@ export default function ReviewsMarquee() {
                 </div>
               </div>
 
-              {/* Review Quote Text */}
+              {/* Review Text */}
               <p className="sp-clean-review-quote">
                 “ {rev.text} ”
               </p>
 
-              {/* Author Row */}
+              {/* Author Initials Avatar, Name & Location */}
               <div className="sp-clean-author-row">
                 <div className="sp-clean-author-avatar">
                   {rev.initials}

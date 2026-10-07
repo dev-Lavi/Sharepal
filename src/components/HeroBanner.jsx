@@ -1,7 +1,6 @@
 import React from 'react';
-import { Calendar, Gift, Tag, RotateCcw, ArrowUpRight } from 'lucide-react';
 
-/* ================= BANNER 1: GAMING CONSOLES BANNER (IMAGE 1) ================= */
+/* ================= BANNER 1: GAMING CONSOLES BANNER ================= */
 export function GamingBanner() {
   return (
     <div className="sp-banner-slide-standalone sp-banner-gaming">
@@ -16,13 +15,29 @@ export function GamingBanner() {
       <div className="sp-banner-gaming-center">
         <h1 className="sp-banner-gaming-title">Gaming Consoles</h1>
         <p className="sp-banner-gaming-sub">
-          Rent the latest gaming gadgets from <span className="sp-brand-inline">Share<span style={{ color: '#9EFF00' }}>Pal</span></span> PS5, Xbox, Oculus VR, Racing Wheel on rent.
+          Rent the latest gaming gadgets from <span className="sp-brand-inline">Share<span style={{ color: '#9EFF00' }}>Pal</span></span>
+          {' '}PS5, Xbox, Oculus VR, Racing Wheel on rent.
         </p>
 
+        {/* Official Brand SVGs: XBOX | PS5 | Sony */}
         <div className="sp-gaming-logos-row">
-          <span className="sp-brand-pill-logo">XBOX</span>
-          <span className="sp-brand-pill-logo">PS5</span>
-          <span className="sp-brand-pill-logo">∞ Meta</span>
+          <img 
+            src="https://images.sharepal.in/super-categories-brand-logos/gaming/XBOX.svg" 
+            alt="XBOX" 
+            className="sp-brand-svg-logo"
+          />
+          <span className="sp-brand-logo-sep">|</span>
+          <img 
+            src="https://images.sharepal.in/super-categories-brand-logos/gaming/PS5.svg" 
+            alt="PlayStation 5" 
+            className="sp-brand-svg-logo"
+          />
+          <span className="sp-brand-logo-sep">|</span>
+          <img 
+            src="https://images.sharepal.in/super-categories-brand-logos/gaming/Sony.svg" 
+            alt="Sony" 
+            className="sp-brand-svg-logo"
+          />
         </div>
       </div>
 
@@ -37,111 +52,28 @@ export function GamingBanner() {
   );
 }
 
-/* ================= BANNER 2: ASSET PARTNER BANNER (IMAGE 2) ================= */
+/* ================= BANNER 2: ASSET PARTNER BANNER ================= */
 export function AssetPartnerBanner() {
   return (
-    <div className="sp-banner-slide-standalone sp-banner-asset-partner">
-      <div className="sp-asset-left-content">
-        <h2 className="sp-asset-heading">
-          Become an <span style={{ color: '#9EFF00' }}>Asset Partner</span>. Earn Monthly.
-        </h2>
-
-        <div className="sp-asset-benefits-row">
-          {/* Earning Benefits */}
-          <div className="sp-asset-card">
-            <span className="sp-asset-card-tag">EARNING BENEFITS</span>
-            <div className="sp-asset-card-items">
-              <div className="sp-asset-item">
-                <div className="sp-asset-item-top">
-                  <span className="sp-asset-highlight" style={{ color: '#9EFF00' }}>Monthly Earnings</span>
-                  <Calendar size={14} color="#fff" />
-                </div>
-                <span className="sp-asset-sub">From rental assets</span>
-              </div>
-
-              <div className="sp-asset-item">
-                <div className="sp-asset-item-top">
-                  <span className="sp-asset-highlight" style={{ color: '#9EFF00' }}>Upto ₹10,000</span>
-                  <Gift size={14} color="#fff" />
-                </div>
-                <span className="sp-asset-sub">Instant Wallet credits</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Rental Benefits */}
-          <div className="sp-asset-card">
-            <span className="sp-asset-card-tag">RENTAL BENEFITS</span>
-            <div className="sp-asset-card-items">
-              <div className="sp-asset-item">
-                <div className="sp-asset-item-top">
-                  <span className="sp-asset-highlight" style={{ color: '#9EFF00' }}>10% Off</span>
-                  <Tag size={14} color="#fff" />
-                </div>
-                <span className="sp-asset-sub">Exclusive discount when you rent</span>
-              </div>
-
-              <div className="sp-asset-item">
-                <div className="sp-asset-item-top">
-                  <span className="sp-asset-highlight" style={{ color: '#9EFF00' }}>Get 10% Cashback</span>
-                  <RotateCcw size={14} color="#fff" />
-                </div>
-                <span className="sp-asset-sub">On every order</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="sp-asset-right-content">
-        <div className="sp-asset-imagery">
-          <img 
-            src="https://images.sharepal.in/super-categories/Category+Card+Image.webp" 
-            alt="Cameras, Drones and PS5" 
-            className="sp-asset-gear-img"
-          />
-        </div>
-        <a href="#" className="sp-btn-lime-cta">
-          <span>Know More</span>
-          <ArrowUpRight size={18} />
-        </a>
-      </div>
+    <div className="sp-static-banner-card">
+      <img 
+        src="/assets-fund-banner.webp" 
+        alt="Become an Asset Partner. Earn Monthly." 
+        className="sp-static-banner-img"
+      />
     </div>
   );
 }
 
-/* ================= BANNER 3: RENT OUT YOUR GEAR BANNER (IMAGE 3) ================= */
+/* ================= BANNER 3: EWS / EARN WITH SHAREPAL BANNER ================= */
 export function RentOutBanner() {
   return (
-    <div className="sp-banner-slide-standalone sp-banner-rent-out">
-      <div className="sp-rentout-left-art">
-        <img 
-          src="https://images.sharepal.in/sub-category-card/DJI-Mini-4-Pro-RC2-drone.webp" 
-          alt="DJI Drone" 
-          className="sp-drone-art"
-        />
-      </div>
-
-      <div className="sp-rentout-center">
-        <p className="sp-rentout-question">
-          Got gear you <span className="sp-underline-lime">dont use anymore</span>?
-        </p>
-        <h2 className="sp-rentout-heading">
-          Rent Out Your Gear on SharePal
-        </h2>
-        <a href="#" className="sp-btn-lime-cta" style={{ margin: '14px auto 0 auto' }}>
-          <span>Earn With Us</span>
-          <ArrowUpRight size={18} />
-        </a>
-      </div>
-
-      <div className="sp-rentout-right-art">
-        <img 
-          src="https://images.sharepal.in/categories/gaming-consoles/ps5/ps5-with-1-controller/ps5-console-with-1-controller-on-rent-sharepal-1.webp" 
-          alt="PS5 Controller" 
-          className="sp-ps5-art"
-        />
-      </div>
+    <div className="sp-static-banner-card">
+      <img 
+        src="/ews-generic-banner-desktop.webp" 
+        alt="Earn With SharePal" 
+        className="sp-static-banner-img"
+      />
     </div>
   );
 }

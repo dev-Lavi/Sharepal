@@ -6,9 +6,9 @@ import SubCategoryFilter from './components/SubCategoryFilter';
 import ProductFilterBar from './components/ProductFilterBar';
 import ProductCard from './components/ProductCard';
 import AvailableOffers from './components/AvailableOffers';
+import FAQSection from './components/FAQSection';
 import ReviewsMarquee from './components/ReviewsMarquee';
 import ImpactStats from './components/ImpactStats';
-import FAQSection from './components/FAQSection';
 import Footer from './components/Footer';
 import FloatingActions from './components/FloatingActions';
 import DatePickerModal from './components/DatePickerModal';
@@ -41,6 +41,9 @@ export default function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCityModalOpen, setIsCityModalOpen] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState(null);
+
+  // Show More State for Product Listing (Requirement 3)
+  const [showAllProducts, setShowAllProducts] = useState(false);
 
   // Scroll Header Upward Hide Animation State (Requirement 3)
   const [isHeaderHidden, setIsHeaderHidden] = useState(false);
@@ -130,10 +133,11 @@ export default function App() {
     return result;
   }, [products, selectedSubCat, searchQuery]);
 
-  // Segment products for interleaved banners (Requirement 4)
+  // Segmentation for Interleaved Layout (Requirement 2 & 3)
   const row1Products = filteredProducts.slice(0, 4);
   const row2Products = filteredProducts.slice(4, 8);
-  const remainingProducts = filteredProducts.slice(8);
+  const row3Products = filteredProducts.slice(8, 12);
+  const extraProducts = filteredProducts.slice(12);
 
   const renderProductCard = (product) => (
     <ProductCard
@@ -179,15 +183,15 @@ export default function App() {
           onSelectSubCat={setSelectedSubCat}
         />
 
-        {/* Right: Interleaved Banners, Products & Offers (Requirement 4 & 5) */}
+        {/* Right: Interleaved Banners, Products & Offers */}
         <div className="sp-catalog-main-content">
           
-          {/* Banner 1: Gaming Consoles Banner */}
+          {/* Banner 1: Gaming Consoles Banner with Exact Brand SVGs */}
           <GamingBanner />
 
-          {/* Section Heading & Item Count */}
+          {/* Section Heading & Item Count: "Gaming Gadgets On Rent | Total items: 50 items" */}
           <ProductFilterBar
-            totalCount={products.length}
+            totalCount={50}
             isSearchOpen={isSearchOpen}
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
@@ -198,12 +202,12 @@ export default function App() {
             {row1Products.map(renderProductCard)}
           </div>
 
-          {/* Banner 2: Become an Asset Partner Banner */}
+          {/* Banner 2: Become an Asset Partner Banner (assets-fund-banner.webp) */}
           <div style={{ margin: '24px 0' }}>
             <AssetPartnerBanner />
           </div>
 
-          {/* Available Offers (3 Offers) Section (Requirement 5) */}
+          {/* Available Offers (3 Offers) Section */}
           <AvailableOffers />
 
           {/* Row 2: 4 Products */}
@@ -213,35 +217,56 @@ export default function App() {
             </div>
           )}
 
-          {/* Banner 3: Rent Out Your Gear Banner */}
+          {/* Banner 3: Rent Out Your Gear Banner (ews-generic-banner-desktop.webp) */}
           <div style={{ margin: '24px 0' }}>
             <RentOutBanner />
           </div>
 
-          {/* Remaining Products */}
-          {remainingProducts.length > 0 && (
-            <div className="sp-product-grid">
-              {remainingProducts.map(renderProductCard)}
+          {/* Row 3: 4 Products */}
+          {row3Products.length > 0 && (
+            <div className="sp-product-grid" style={{ marginTop: '24px' }}>
+              {row3Products.map(renderProductCard)}
             </div>
           )}
+
+          {/* Remaining products if expanded */}
+          {showAllProducts && extraProducts.length > 0 && (
+            <div className="sp-product-grid" style={{ marginTop: '20px' }}>
+              {extraProducts.map(renderProductCard)}
+            </div>
+          )}
+
+          {/* "Showing 12 of 50 results" + "Show More" Button (Requirement 3 / Image 2) */}
+          <div className="sp-show-more-container">
+            <p className="sp-showing-results-text">
+              Showing {showAllProducts ? (12 + extraProducts.length) : 12} of 50 results
+            </p>
+            <button
+              type="button"
+              className="sp-show-more-btn"
+              onClick={() => setShowAllProducts(!showAllProducts)}
+            >
+              {showAllProducts ? 'Show Less' : 'Show More'}
+            </button>
+          </div>
 
         </div>
 
       </div>
 
-      {/* 4. Customer Social Proof & Marquee (Image 4) */}
+      {/* 4. FAQ Section APPEARS BEFORE "Served more than 1 Lakh Orders" (Requirement 5) */}
+      <FAQSection />
+
+      {/* 5. "Served more than 1 Lakh Orders" with Increased Font Size (Requirement 6 / Image 3) */}
       <ReviewsMarquee />
 
-      {/* 5. Platform Impact Metrics with Gradient Text (Requirement 6 / Image 4) */}
+      {/* 6. Platform Impact Metrics with Horizontal Gradient (Image 3) */}
       <ImpactStats />
-
-      {/* 6. Clean White Card FAQ Section (Requirement 7 / Image 5) */}
-      <FAQSection />
 
       {/* 7. Midnight Blue Footer with Logo & 5 Columns */}
       <Footer />
 
-      {/* 8. Floating Actions: Black/Lime Date Pill + Lime/Blue Chat Bubble */}
+      {/* 8. Floating Actions: Black/Lime Date Pill + Animated Chatbot Widget (Requirement 4) */}
       <FloatingActions
         onOpenDateModal={() => setIsDateModalOpen(true)}
         rentalDates={rentalDates}

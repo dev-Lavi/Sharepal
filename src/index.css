@@ -84,7 +84,6 @@ a {
   will-change: transform;
 }
 
-/* Upward Hide Animation on Scroll (Requirement 3) */
 .sp-header.sp-header-hidden {
   transform: translateY(-100%);
 }
@@ -98,7 +97,7 @@ a {
   position: relative;
 }
 
-/* Exact Royal Blue SharePal Logo Hanging Badge from Image 1 */
+/* Exact Royal Blue SharePal Logo Hanging Badge */
 .sp-logo-wrapper {
   display: flex;
   align-items: flex-start;
@@ -187,7 +186,7 @@ a {
   font-weight: 600;
 }
 
-/* Header Right Clean Icons (Requirement 3: Search, Cart, Profile) */
+/* Header Right Clean Icons */
 .sp-header-right {
   display: flex;
   align-items: center;
@@ -381,7 +380,7 @@ a {
 }
 
 /* ==========================================================================
-   4. STANDALONE BANNERS (INTERLEAVED AS IN REQUIREMENT 4)
+   4. STANDALONE BANNERS (REQUIREMENT 1 & 2)
    ========================================================================== */
 .sp-banner-slide-standalone {
   border-radius: 20px;
@@ -396,7 +395,7 @@ a {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
 }
 
-/* Slide 1: Gaming Consoles Banner (Image 1) */
+/* Slide 1: Gaming Consoles Banner with Brand SVGs (Image 1) */
 .sp-banner-gaming {
   background: linear-gradient(135deg, #4c187c 0%, #681d99 100%);
 }
@@ -408,12 +407,12 @@ a {
 
 .sp-banner-gaming-center {
   text-align: center;
-  max-width: 480px;
+  max-width: 500px;
 }
 
 .sp-banner-gaming-title {
   font-family: var(--sp-font-heading);
-  font-size: 2.1rem;
+  font-size: 2.2rem;
   font-weight: 700;
   margin-bottom: 8px;
   letter-spacing: -0.02em;
@@ -431,6 +430,7 @@ a {
   font-style: italic;
 }
 
+/* Brand SVGs Row (Requirement 1) */
 .sp-gaming-logos-row {
   display: flex;
   align-items: center;
@@ -438,136 +438,43 @@ a {
   gap: 16px;
 }
 
-.sp-brand-pill-logo {
-  font-weight: 800;
+.sp-brand-svg-logo {
+  height: 20px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
+.sp-brand-logo-sep {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.9rem;
+}
+
+.sp-brand-meta-wrapper {
+  display: flex;
+  align-items: center;
+  font-weight: 700;
   font-size: 0.95rem;
-  letter-spacing: 0.05em;
-  opacity: 0.9;
+  color: #ffffff;
 }
 
-/* Slide 2: Asset Partner Banner (Image 2) */
-.sp-banner-asset-partner {
-  background: #0b1528;
+/* Banners 2 & 3: Static WebP Images (Requirement 2) */
+.sp-static-banner-card {
+  border-radius: 20px;
+  overflow: hidden;
+  width: 100%;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
 }
 
-.sp-asset-left-content {
-  flex: 1;
-}
-
-.sp-asset-heading {
-  font-family: var(--sp-font-heading);
-  font-size: 1.65rem;
-  font-weight: 700;
-  margin-bottom: 12px;
-}
-
-.sp-asset-benefits-row {
-  display: flex;
-  gap: 12px;
-}
-
-.sp-asset-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  padding: 10px 14px;
-  min-width: 200px;
-}
-
-.sp-asset-card-tag {
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: #94a3b8;
-  letter-spacing: 0.05em;
+.sp-static-banner-img {
+  width: 100%;
+  height: auto;
   display: block;
-  margin-bottom: 6px;
-}
-
-.sp-asset-card-items {
-  display: flex;
-  gap: 16px;
-}
-
-.sp-asset-item {
-  display: flex;
-  flex-direction: column;
-}
-
-.sp-asset-item-top {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.sp-asset-highlight {
-  font-weight: 700;
-  font-size: 0.88rem;
-}
-
-.sp-asset-sub {
-  font-size: 0.7rem;
-  color: #cbd5e1;
-}
-
-.sp-asset-right-content {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.sp-asset-gear-img {
-  height: 150px;
-  object-fit: contain;
-}
-
-.sp-btn-lime-cta {
-  background: var(--sp-lime-accent);
-  color: #0f172a;
-  font-weight: 800;
-  font-size: 0.88rem;
-  padding: 10px 18px;
-  border-radius: 9999px;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  transition: transform 150ms ease;
-}
-.sp-btn-lime-cta:hover {
-  transform: scale(1.04);
-}
-
-/* Slide 3: Rent Out Your Gear (Image 3) */
-.sp-banner-rent-out {
-  background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
-}
-
-.sp-drone-art,
-.sp-ps5-art {
-  height: 160px;
-  object-fit: contain;
-}
-
-.sp-rentout-center {
-  text-align: center;
-}
-
-.sp-rentout-question {
-  font-size: 1.1rem;
-  margin-bottom: 4px;
-}
-
-.sp-underline-lime {
-  border-bottom: 2px solid var(--sp-lime-accent);
-}
-
-.sp-rentout-heading {
-  font-family: var(--sp-font-heading);
-  font-size: 1.85rem;
-  font-weight: 700;
+  border-radius: 20px;
+  object-fit: cover;
 }
 
 /* ==========================================================================
-   5. AVAILABLE OFFERS (3 OFFERS) COMPONENT (REQUIREMENT 5 / IMAGE 3)
+   5. AVAILABLE OFFERS (3 OFFERS) COMPONENT
    ========================================================================== */
 .sp-available-offers-card {
   background: #faf5ff;
@@ -853,166 +760,41 @@ a {
 }
 
 /* ==========================================================================
-   8. REVIEWS MARQUEE (IMAGE 4)
+   8. "SHOWING 12 OF 50 RESULTS" & "SHOW MORE" BUTTON (REQUIREMENT 3 / IMAGE 2)
    ========================================================================== */
-.sp-reviews-section {
-  padding: 48px 0 24px 0;
-  background: #ffffff;
-  border-top: 1px solid #f1f5f9;
-}
-
-.sp-reviews-header {
-  text-align: center;
-  margin-bottom: 28px;
-}
-
-.sp-reviews-title-clean {
-  font-family: var(--sp-font-heading);
-  font-size: 2.1rem;
-  font-weight: 700;
-  color: #0f172a;
-}
-
-.sp-marquee-wrapper {
-  display: flex;
-  overflow: hidden;
-  gap: 16px;
-  padding: 8px 0;
-}
-
-.sp-marquee-track {
-  display: flex;
-  gap: 16px;
-  animation: marqueeScroll 45s linear infinite;
-  flex-shrink: 0;
-}
-
-.sp-review-clean-card {
-  width: 320px;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 18px;
-  padding: 18px;
+.sp-show-more-container {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 12px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
-  flex-shrink: 0;
-}
-
-.sp-review-card-top-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.sp-clean-stars-row {
-  display: flex;
-  gap: 2px;
-}
-
-.sp-clean-review-quote {
-  font-size: 0.82rem;
-  color: #1e293b;
-  line-height: 1.5;
-  height: 4.5em;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-}
-
-.sp-clean-author-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.sp-clean-author-avatar {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: #dbeafe;
-  color: #1d4ed8;
-  font-size: 0.78rem;
-  font-weight: 700;
-  display: flex;
   align-items: center;
   justify-content: center;
+  margin: 32px 0 16px 0;
+  gap: 12px;
 }
 
-.sp-clean-author-meta {
-  display: flex;
-  flex-direction: column;
-}
-
-.sp-author-name {
-  font-size: 0.82rem;
-  color: #0f172a;
-}
-.sp-author-location-cat {
-  font-size: 0.72rem;
+.sp-showing-results-text {
+  font-size: 0.88rem;
   color: #64748b;
-}
-
-/* ==========================================================================
-   9. EXACT BLUE-TO-GREEN GRADIENT METRICS (REQUIREMENT 6 / IMAGE 4)
-   ========================================================================== */
-.sp-impact-metrics-section {
-  background: #ffffff;
-  padding: 44px 0;
-  border-top: 1px solid #e2e8f0;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.sp-impact-metrics-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  text-align: center;
-}
-
-.sp-metric-figure {
-  font-family: var(--sp-font-heading);
-  font-size: 3.4rem;
-  font-weight: 800;
-  line-height: 1.1;
-  margin-bottom: 6px;
-  letter-spacing: -0.02em;
-}
-
-/* Exact gradient for 250Cr+ */
-.sp-gradient-metric-1 {
-  background: linear-gradient(90deg, #1044eb 0%, #1044eb 48%, #057ee0 66%, #35b330 84%, #64c61f 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  display: inline-block;
-}
-
-/* Exact gradient for 4.5M Kg */
-.sp-gradient-metric-2 {
-  background: linear-gradient(90deg, #1044eb 0%, #1044eb 42%, #0284c7 60%, #35b330 80%, #64c61f 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  display: inline-block;
-}
-
-/* Exact gradient for 100K+ */
-.sp-gradient-metric-3 {
-  background: linear-gradient(90deg, #1044eb 0%, #1044eb 48%, #057ee0 66%, #35b330 84%, #64c61f 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  display: inline-block;
-}
-
-.sp-metric-text {
-  font-size: 1rem;
   font-weight: 500;
-  color: #475569;
+}
+
+.sp-show-more-btn {
+  background: #ffffff;
+  border: 1.5px solid #0f172a;
+  color: #0f172a;
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 9px 52px;
+  border-radius: 9999px;
+  transition: all 150ms ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+.sp-show-more-btn:hover {
+  background: #0f172a;
+  color: #ffffff;
 }
 
 /* ==========================================================================
-   10. EXACT CLEAN WHITE CARD FAQ SECTION (REQUIREMENT 7 / IMAGE 5)
+   9. EXACT CLEAN WHITE CARD FAQ SECTION (REQUIREMENT 5 & 7 / IMAGE 5)
    ========================================================================== */
 .sp-faq-section-wrapper {
   padding: 40px 0;
@@ -1094,7 +876,169 @@ a {
 }
 
 /* ==========================================================================
-   11. EXACT MIDNIGHT BLUE FOOTER (IMAGE 5)
+   10. REVIEWS SECTION WITH INCREASED FONT SIZE (REQUIREMENT 6 / IMAGE 3)
+   ========================================================================== */
+.sp-reviews-section {
+  padding: 48px 0 24px 0;
+  background: #ffffff;
+  border-top: 1px solid #f1f5f9;
+}
+
+.sp-reviews-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.sp-reviews-title-large {
+  font-family: var(--sp-font-heading);
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+}
+
+.sp-marquee-wrapper {
+  display: flex;
+  overflow: hidden;
+  gap: 16px;
+  padding: 8px 0;
+}
+
+.sp-marquee-track {
+  display: flex;
+  gap: 16px;
+  animation: marqueeScroll 45s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes marqueeScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.sp-review-clean-card {
+  width: 320px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+  flex-shrink: 0;
+}
+
+.sp-review-card-top-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sp-clean-stars-row {
+  display: flex;
+  gap: 2px;
+}
+
+.sp-clean-review-quote {
+  font-size: 0.82rem;
+  color: #1e293b;
+  line-height: 1.5;
+  height: 4.5em;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.sp-clean-author-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sp-clean-author-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sp-clean-author-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.sp-author-name {
+  font-size: 0.82rem;
+  color: #0f172a;
+}
+.sp-author-location-cat {
+  font-size: 0.72rem;
+  color: #64748b;
+}
+
+/* ==========================================================================
+   11. EXACT BLUE-TO-GREEN GRADIENT METRICS (IMAGE 3)
+   ========================================================================== */
+.sp-impact-metrics-section {
+  background: #ffffff;
+  padding: 52px 0 80px 0;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.sp-impact-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  text-align: center;
+}
+
+.sp-metric-figure {
+  font-family: var(--sp-font-heading);
+  font-size: 4rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+
+.sp-gradient-metric-1 {
+  background: linear-gradient(90deg, #1044eb 0%, #1044eb 48%, #057ee0 66%, #35b330 84%, #64c61f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.sp-gradient-metric-2 {
+  background: linear-gradient(90deg, #1044eb 0%, #1044eb 42%, #0284c7 60%, #35b330 80%, #64c61f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.sp-gradient-metric-3 {
+  background: linear-gradient(90deg, #1044eb 0%, #1044eb 48%, #057ee0 66%, #35b330 84%, #64c61f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.sp-metric-text {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #475569;
+}
+
+/* ==========================================================================
+   12. EXACT MIDNIGHT BLUE FOOTER
    ========================================================================== */
 .sp-website-footer {
   background: var(--sp-footer-navy);
@@ -1219,7 +1163,7 @@ a {
 }
 
 /* ==========================================================================
-   12. FLOATING WIDGETS
+   13. FLOATING WIDGETS & ANIMATED CHATBOT (REQUIREMENT 4)
    ========================================================================== */
 .sp-floating-date-pill {
   position: fixed;
@@ -1244,27 +1188,65 @@ a {
   transform: translateX(-50%) translateY(-2px);
 }
 
-.sp-floating-chat-bubble {
+/* ── Exact Lottie Chatbot Widget ── */
+.sp-chatbot-floating-link {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
-  background: var(--sp-lime-accent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-  z-index: 95;
-  transition: transform 200ms ease;
+  bottom: 40px;          /* md:bottom-10 = 40px */
+  right: 24px;           /* md:right-6 = 24px */
+  z-index: 100;
+  display: block;
+  cursor: pointer;
+  text-decoration: none;
 }
-.sp-floating-chat-bubble:hover {
-  transform: scale(1.1);
+
+/* w-20 = 80px, lg:w-28 = 112px – use 96px as compromise */
+.sp-chatbot-container {
+  width: 96px;
+  height: 96px;
+}
+
+.sp-chatbot-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.22));
+  animation: chatbotBounce 2.8s ease-in-out infinite;
+}
+
+@keyframes chatbotBounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+/* Typing dots inside the bubbles */
+.sp-chat-dot {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* Green-bubble dots (top row) */
+.sp-chat-dot-green-1 { animation: dotBounce 1.5s infinite ease-in-out 0s; }
+.sp-chat-dot-green-2 { animation: dotBounce 1.5s infinite ease-in-out 0.15s; }
+.sp-chat-dot-green-3 { animation: dotBounce 1.5s infinite ease-in-out 0.3s; }
+
+/* Blue-bubble dots (bottom row) */
+.sp-chat-dot-1 { animation: dotBounce 1.5s infinite ease-in-out 0.05s; }
+.sp-chat-dot-2 { animation: dotBounce 1.5s infinite ease-in-out 0.2s; }
+.sp-chat-dot-3 { animation: dotBounce 1.5s infinite ease-in-out 0.35s; }
+
+@keyframes dotBounce {
+  0%, 80%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  40% {
+    transform: scale(0.55);
+    opacity: 0.55;
+  }
 }
 
 /* ==========================================================================
-   13. MODALS & DRAWERS
+   14. MODALS & DRAWERS
    ========================================================================== */
 .sp-modal-backdrop {
   position: fixed;
