@@ -257,16 +257,55 @@ a {
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
 }
 
+.sp-super-category-bar {
+  width: 100%;
+}
+
+.sp-super-nav-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 52px;
+}
+
+.sp-super-nav-scroll-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  overflow: hidden;
+}
+
+.sp-nav-arrow-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #64748b;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  z-index: 5;
+}
+
 .sp-super-nav-list {
   display: flex;
   align-items: center;
   justify-content: center;
   list-style: none;
   gap: 36px;
+  margin: 0;
+  padding: 0;
 }
 
 .sp-super-nav-item {
   position: relative;
+  white-space: nowrap;
 }
 
 .sp-super-nav-link {
@@ -275,6 +314,10 @@ a {
   font-size: 0.92rem;
   font-weight: 500;
   color: #475569;
+  cursor: pointer;
+  background: none;
+  border: none;
+  transition: color 150ms ease;
 }
 
 .sp-super-nav-item.active .sp-super-nav-link {
@@ -1580,6 +1623,11 @@ a {
   background: #f8fafc;
 }
 
+/* Bottom Navigation Bar - Hidden by default on Desktop */
+.sp-bottom-nav {
+  display: none !important;
+}
+
 @media (max-width: 768px) {
   .desktop-only {
     display: none !important;
@@ -1765,5 +1813,76 @@ a {
     font-weight: 700 !important;
     border-radius: 9999px !important;
     margin-top: 8px !important;
+  }
+
+  /* Mobile Category Bar & Inline Arrows */
+  .sp-super-nav-wrapper {
+    justify-content: space-between !important;
+    gap: 4px !important;
+    height: 46px !important;
+    padding: 0 6px !important;
+  }
+  .sp-nav-arrow-btn {
+    display: flex !important;
+  }
+  .sp-super-nav-scroll-area {
+    justify-content: flex-start !important;
+  }
+  .sp-super-nav-list {
+    gap: 16px !important;
+    padding: 0 4px !important;
+  }
+  .sp-super-nav-link {
+    padding: 10px 4px !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* Mobile Bottom Navigation Bar */
+  .sp-bottom-nav {
+    display: flex !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 56px !important;
+    background: #ffffff !important;
+    border-top: 1px solid #e2e8f0 !important;
+    z-index: 150 !important;
+    align-items: center !important;
+    justify-content: space-around !important;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05) !important;
+    padding: 0 8px !important;
+  }
+  .sp-bottom-nav-item {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 2px !important;
+    color: #64748b !important;
+    font-size: 10px !important;
+    font-weight: 500 !important;
+    flex: 1 !important;
+    height: 100% !important;
+    background: transparent !important;
+    border: none !important;
+    cursor: pointer !important;
+  }
+  .sp-bottom-nav-item.sp-bottom-nav-active,
+  .sp-bottom-nav-item:hover {
+    color: #0f172a !important;
+    font-weight: 700 !important;
+  }
+  .sp-bottom-nav-badge {
+    position: absolute !important;
+    top: 0 !important;
+    right: 18px !important;
+    background: #ef4444 !important;
+    color: #ffffff !important;
+    font-size: 9px !important;
+    font-weight: 700 !important;
+    border-radius: 9999px !important;
+    padding: 1px 4px !important;
+    line-height: 1 !important;
   }
 }

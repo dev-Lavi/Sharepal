@@ -19,7 +19,7 @@ export default function SuperCategoryNav({ activeCategory, onSelectCategory }) {
         {/* Left Arrow Button */}
         <button 
           type="button" 
-          className="sp-nav-arrow-btn sp-nav-arrow-left" 
+          className="sp-nav-arrow-btn sp-nav-arrow-left mobile-only" 
           onClick={() => scroll('left')}
           aria-label="Scroll left"
         >
@@ -52,7 +52,7 @@ export default function SuperCategoryNav({ activeCategory, onSelectCategory }) {
         {/* Right Arrow Button */}
         <button 
           type="button" 
-          className="sp-nav-arrow-btn sp-nav-arrow-right" 
+          className="sp-nav-arrow-btn sp-nav-arrow-right mobile-only" 
           onClick={() => scroll('right')}
           aria-label="Scroll right"
         >

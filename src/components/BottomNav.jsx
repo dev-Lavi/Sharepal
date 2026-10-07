@@ -3,7 +3,7 @@ import { Home, LayoutGrid, Search, ShoppingCart } from 'lucide-react';
 
 export default function BottomNav({ cartCount, onOpenCart, onOpenSearch }) {
   return (
-    <nav className="sp-bottom-nav" aria-label="Mobile navigation">
+    <nav className="sp-bottom-nav mobile-only" aria-label="Mobile navigation">
       <button className="sp-bottom-nav-item sp-bottom-nav-active" aria-label="Home">
         <Home size={22} strokeWidth={2} />
         <span>Home</span>
